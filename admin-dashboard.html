@@ -1,0 +1,2281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoffeeCraft Admin Dashboard</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Shadcn-inspired styles -->
+  <style>
+    :root {
+      --radius: 0.625rem;
+      --background: oklch(0.98 0.01 45);
+      --foreground: oklch(0.25 0.05 30);
+      --card: oklch(1 0 0);
+      --card-foreground: oklch(0.25 0.05 30);
+      --popover: oklch(1 0 0);
+      --popover-foreground: oklch(0.25 0.05 30);
+      --primary: oklch(0.35 0.15 30);
+      --primary-foreground: oklch(0.98 0.01 45);
+      --secondary: oklch(0.85 0.05 45);
+      --secondary-foreground: oklch(0.25 0.05 30);
+      --muted: oklch(0.92 0.02 45);
+      --muted-foreground: oklch(0.55 0.05 30);
+      --accent: oklch(0.65 0.12 35);
+      --accent-foreground: oklch(0.98 0.01 45);
+      --destructive: oklch(0.577 0.245 27.325);
+      --border: oklch(0.88 0.02 45);
+      --input: oklch(0.95 0.01 45);
+      --ring: oklch(0.65 0.12 35);
+    }
+
+    .dark {
+      --background: oklch(0.08 0 0);
+      --foreground: oklch(0.98 0 0);
+      --card: oklch(0.12 0 0);
+      --card-foreground: oklch(0.98 0 0);
+      --popover: oklch(0.12 0 0);
+      --popover-foreground: oklch(0.98 0 0);
+      --primary: oklch(0.85 0.15 30);
+      --primary-foreground: oklch(0.08 0 0);
+      --secondary: oklch(0.2 0 0);
+      --secondary-foreground: oklch(0.98 0 0);
+      --muted: oklch(0.15 0 0);
+      --muted-foreground: oklch(0.7 0 0);
+      --accent: oklch(0.2 0 0);
+      --accent-foreground: oklch(0.98 0 0);
+      --destructive: oklch(0.7 0.2 25);
+      --border: oklch(0.25 0 0);
+      --input: oklch(0.15 0 0);
+      --ring: oklch(0.85 0.15 30);
+    }
+
+    /* Coffee-themed styles */
+    .coffee-gradient {
+      background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
+    }
+
+    .coffee-text-gradient {
+      background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Shadcn-inspired components */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    .btn-secondary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-destructive {
+      background-color: var(--destructive);
+      color: var(--primary-foreground);
+    }
+
+    .btn-destructive:hover {
+      opacity: 0.9;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      background-color: transparent;
+      color: var(--foreground);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .input {
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--background);
+      color: var(--foreground);
+      width: 100%;
+    }
+
+    .input:focus {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+
+    .select {
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--background);
+      color: var(--foreground);
+      width: 100%;
+    }
+
+    .select:focus {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+
+    .card {
+      border-radius: var(--radius);
+      background-color: var(--card);
+      color: var(--card-foreground);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .badge-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .badge-secondary {
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    .badge-outline {
+      background-color: transparent;
+      border: 1px solid var(--border);
+      color: var(--foreground);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th {
+      background-color: var(--muted);
+      color: var(--muted-foreground);
+      font-weight: 500;
+      text-align: left;
+      padding: 0.75rem 1rem;
+    }
+
+    .table td {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .table tr:hover {
+      background-color: var(--muted);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal {
+      background-color: var(--card);
+      color: var(--card-foreground);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab.active {
+      border-bottom: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      padding: 1rem;
+      border-radius: var(--radius);
+      background-color: var(--card);
+      color: var(--card-foreground);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+      max-width: 350px;
+      transform: translateY(0);
+      animation: slideIn 0.2s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .toast-success {
+      border-left: 4px solid #10b981;
+    }
+
+    .toast-error {
+      border-left: 4px solid #ef4444;
+    }
+
+    .toast-warning {
+      border-left: 4px solid #f59e0b;
+    }
+
+    .toast-info {
+      border-left: 4px solid #3b82f6;
+    }
+
+    /* Utility classes */
+    .modal-hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="coffee-gradient text-white p-4 shadow-md">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">CoffeeCraft Admin Dashboard</h1>
+        <div>
+          <button id="theme-toggle" class="btn btn-outline bg-white/10 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="dark-icon modal-hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="light-icon"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 container mx-auto p-4">
+      <!-- Tabs -->
+      <div class="tabs mb-6">
+        <div class="tab active" data-tab="products">Products</div>
+        <div class="tab" data-tab="categories">Categories</div>
+        <div class="tab" data-tab="attributes">Attributes</div>
+        <div class="tab" data-tab="orders">Orders</div>
+        <div class="tab" data-tab="offers">Offers</div>
+        <div class="tab" data-tab="shipping">Shipping</div>
+        <div class="tab" data-tab="testimonials">Testimonials</div>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Products Tab -->
+        <div class="tab-pane" id="products">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Products</h2>
+            <button class="btn btn-primary" id="add-product-btn">Add Product</button>
+          </div>
+          <div class="card">
+            <div class="table-container">
+              <table class="table" id="products-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>In Stock</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Products will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories Tab -->
+        <div class="tab-pane modal-hidden" id="categories">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Categories</h2>
+            <button class="btn btn-primary" id="add-category-btn">Add Category</button>
+          </div>
+          <div class="card">
+            <div class="table-container">
+              <table class="table" id="categories-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Parent Category</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Categories will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attributes Tab -->
+        <div class="tab-pane modal-hidden" id="attributes">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Attributes</h2>
+            <button class="btn btn-primary" id="add-attribute-btn">Add Attribute</button>
+          </div>
+          <div class="card">
+            <div class="table-container">
+              <table class="table" id="attributes-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Unit</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Attributes will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div class="tab-pane modal-hidden" id="orders">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Orders</h2>
+          </div>
+          <div class="card">
+            <div class="table-container">
+              <table class="table" id="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Orders will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Offers Tab -->
+        <div class="tab-pane modal-hidden" id="offers">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Offers</h2>
+            <button class="btn btn-primary" id="add-offer-btn">Add Offer</button>
+          </div>
+          <div class="card">
+            <div class="table-container">
+              <table class="table" id="offers-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Active</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Offers will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping Tab -->
+        <div class="tab-pane modal-hidden" id="shipping">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Shipping Governorates</h2>
+            <button class="btn btn-primary" id="add-shipping-btn">Add Governorate</button>
+          </div>
+          <div class="card">
+            <div class="table-container">
+              <table class="table" id="shipping-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Shipping Fee</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Shipping governorates will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonials Tab -->
+        <div class="tab-pane modal-hidden" id="testimonials">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Testimonials</h2>
+          </div>
+          <div class="card">
+            <div class="table-container">
+              <table class="table" id="testimonials-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Rating</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Testimonials will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-muted p-4 text-center text-muted-foreground">
+      <p>© 2025 CoffeeCraft Admin Dashboard</p>
+    </footer>
+  </div>
+
+  <!-- Modals -->
+  <!-- Product Modal -->
+  <div id="product-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4" id="product-modal-title">Add Product</h3>
+      <form id="product-form">
+        <input type="hidden" id="product-id">
+        <div class="mb-4">
+          <label class="block mb-2">Name</label>
+          <input type="text" id="product-name" class="input" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Description</label>
+          <textarea id="product-description" class="input" rows="3"></textarea>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-2">Category</label>
+          <select id="product-category" class="select">
+            <option value="">Select Category</option>
+            <!-- Categories will be loaded here -->
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Image URL</label>
+          <input type="text" id="product-image" class="input">
+        </div>
+        <div class="mb-4">
+          <label class="flex items-center">
+            <input type="checkbox" id="product-in-stock" class="mr-2">
+            <span>In Stock</span>
+          </label>
+        </div>
+        <div class="mb-4">
+          <h4 class="font-semibold mb-2">Product Sizes (Hardcoded)</h4>
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <label class="block mb-1">Small Price</label>
+              <input type="number" id="product-price-small" class="input" step="0.01" value="0.00">
+            </div>
+            <div>
+              <label class="block mb-1">Medium Price</label>
+              <input type="number" id="product-price-medium" class="input" step="0.01" value="0.00">
+            </div>
+            <div>
+              <label class="block mb-1">Large Price</label>
+              <input type="number" id="product-price-large" class="input" step="0.01" value="0.00">
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" class="btn btn-outline" id="product-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- Category Modal -->
+  <div id="category-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4" id="category-modal-title">Add Category</h3>
+      <form id="category-form">
+        <input type="hidden" id="category-id">
+        <div class="mb-4">
+          <label class="block mb-2">Name</label>
+          <input type="text" id="category-name" class="input" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Parent Category</label>
+          <select id="category-parent" class="select">
+            <option value="">None</option>
+            <!-- Categories will be loaded here -->
+          </select>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" class="btn btn-outline" id="category-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Attribute Modal -->
+  <div id="attribute-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4" id="attribute-modal-title">Add Attribute</h3>
+      <form id="attribute-form">
+        <input type="hidden" id="attribute-id">
+        <div class="mb-4">
+          <label class="block mb-2">Name</label>
+          <input type="text" id="attribute-name" class="input" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Unit</label>
+          <input type="text" id="attribute-unit" class="input">
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" class="btn btn-outline" id="attribute-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Detail Modal -->
+  <div id="order-detail-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4">Order Details</h3>
+      <div id="order-detail-content">
+        <!-- Order details will be loaded here -->
+      </div>
+      <div class="mt-4">
+        <h4 class="font-semibold mb-2">Update Status</h4>
+        <div class="flex gap-2">
+          <select id="order-status" class="select">
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button id="update-order-status" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="button" class="btn btn-outline" id="order-detail-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offer Modal -->
+  <div id="offer-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4" id="offer-modal-title">Add Offer</h3>
+      <form id="offer-form">
+        <input type="hidden" id="offer-id">
+        <div class="mb-4">
+          <label class="block mb-2">Title</label>
+          <input type="text" id="offer-title" class="input" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Description</label>
+          <textarea id="offer-description" class="input" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Offer Type</label>
+          <select id="offer-type" class="select">
+            <option value="discount">Discount</option>
+            <option value="bundle">Bundle</option>
+            <option value="gift">Gift</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Image URL</label>
+          <input type="text" id="offer-image" class="input">
+        </div>
+        <div class="mb-4">
+          <label class="flex items-center">
+            <input type="checkbox" id="offer-active" class="mr-2" checked>
+            <span>Active</span>
+          </label>
+        </div>
+        <div class="mb-4">
+          <h4 class="font-semibold mb-2">Products in Offer</h4>
+          <div id="offer-products" class="space-y-2">
+            <!-- Product selection will be loaded here -->
+          </div>
+          <button type="button" class="btn btn-outline mt-2" id="add-offer-product">Add Product</button>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" class="btn btn-outline" id="offer-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Shipping Modal -->
+  <div id="shipping-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4" id="shipping-modal-title">Add Shipping Governorate</h3>
+      <form id="shipping-form">
+        <input type="hidden" id="shipping-id">
+        <div class="mb-4">
+          <label class="block mb-2">Name</label>
+          <input type="text" id="shipping-name" class="input" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Shipping Fee</label>
+          <input type="number" id="shipping-fee" class="input" step="0.01" required>
+        </div>
+        <div class="mb-4">
+          <label class="flex items-center">
+            <input type="checkbox" id="shipping-active" class="mr-2" checked>
+            <span>Active</span>
+          </label>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" class="btn btn-outline" id="shipping-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Testimonial Detail Modal -->
+  <div id="testimonial-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4">Testimonial Details</h3>
+      <div class="mb-4">
+        <h4 class="font-semibold">User</h4>
+        <p id="testimonial-user-name"></p>
+      </div>
+      <div class="mb-4">
+        <h4 class="font-semibold">Rating</h4>
+        <p id="testimonial-rating"></p>
+      </div>
+      <div class="mb-4">
+        <h4 class="font-semibold">Message</h4>
+        <p id="testimonial-message"></p>
+      </div>
+      <div class="mb-4">
+        <h4 class="font-semibold">Date</h4>
+        <p id="testimonial-date"></p>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" class="btn btn-outline" id="testimonial-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="modal-backdrop modal-hidden">
+    <div class="modal p-6">
+      <h3 class="text-xl font-semibold mb-4">Confirm Delete</h3>
+      <p id="confirm-message">Are you sure you want to delete this item? This action cannot be undone.</p>
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" class="btn btn-outline" id="confirm-cancel">Cancel</button>
+        <button type="button" class="btn btn-destructive" id="confirm-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast modal-hidden">
+    <div class="flex items-center">
+      <div class="mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="success-icon modal-hidden"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="error-icon modal-hidden"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      </div>
+      <div>
+        <h4 class="font-semibold" id="toast-title">Success</h4>
+        <p id="toast-message">Operation completed successfully.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.52.1/dist/umd/supabase.min.js"></script>
+
+  <!-- App JS -->
+  <script defer>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://nnjfobczkonetmxpgnjz.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5uamZvYmN6a29uZXRteHBnbmp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM1MTU4NTYsImV4cCI6MjA2OTA5MTg1Nn0.Pd1sj6sTeES_eTj5Ea75wsCVIZmIRh20NDVx0GYUkzU';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+
+
+
+
+    // Global variables for delete confirmation
+    let currentDeleteType = null;
+    let currentDeleteId = null;
+
+    // DOM Elements
+    const tabs = document.querySelectorAll('.tab');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.querySelector('.dark-icon');
+    const lightIcon = document.querySelector('.light-icon');
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toast-title');
+    const toastMessage = document.getElementById('toast-message');
+    const successIcon = document.querySelector('.success-icon');
+    const errorIcon = document.querySelector('.error-icon');
+
+    // Modal Elements
+    const testimonialModal = document.getElementById('testimonial-modal');
+    const testimonialUserName = document.getElementById('testimonial-user-name');
+    const testimonialRating = document.getElementById('testimonial-rating');
+    const testimonialMessage = document.getElementById('testimonial-message');
+    const testimonialDate = document.getElementById('testimonial-date');
+    const testimonialClose = document.getElementById('testimonial-close');
+
+    // Global confirmDelete function
+    function confirmDelete(type, id) {
+      currentDeleteType = type;
+      currentDeleteId = id;
+      const deleteModal = document.getElementById('confirm-modal');
+      if (deleteModal) {
+        deleteModal.classList.remove('modal-hidden');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Delete Modal Elements
+      const deleteModal = document.getElementById('confirm-modal');
+      const deleteConfirm = document.getElementById('confirm-delete');
+      const deleteCancel = document.getElementById('confirm-cancel');
+      
+      // Theme toggle
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        darkIcon.classList.toggle('modal-hidden');
+        lightIcon.classList.toggle('modal-hidden');
+      });
+
+      // Tab switching
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const tabName = tab.getAttribute('data-tab');
+          
+          // Update active tab
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          // Show corresponding tab pane
+          tabPanes.forEach(pane => pane.classList.add('modal-hidden'));
+          document.getElementById(tabName).classList.remove('modal-hidden');
+          
+          // Load data for the selected tab
+          loadTabData(tabName);
+        });
+      });
+
+      // Delete confirmation event listeners
+      deleteCancel.addEventListener('click', () => {
+        deleteModal.classList.add('modal-hidden');
+      });
+
+      deleteConfirm.addEventListener('click', async () => {
+        deleteModal.classList.add('modal-hidden');
+        
+        // Call the appropriate delete function
+        switch (currentDeleteType) {
+          case 'product':
+            await deleteProduct(currentDeleteId);
+            break;
+          case 'category':
+            await deleteCategory(currentDeleteId);
+            break;
+          case 'attribute':
+            await deleteAttribute(currentDeleteId);
+            break;
+          case 'offer':
+            await deleteOffer(currentDeleteId);
+            break;
+          case 'shipping_governorate':
+            await deleteGovernorate(currentDeleteId);
+            break;
+          case 'testimonial':
+            await deleteTestimonial(currentDeleteId);
+            break;
+          default:
+            showToast('error', 'Error', 'Invalid delete type');
+        }
+      });
+
+      // Delete functions for each type
+      async function deleteProduct(id) {
+        try {
+          const { error } = await supabase
+            .from('products')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          showToast('success', 'Success', 'Product deleted successfully');
+          loadProducts();
+        } catch (error) {
+          showToast('error', 'Error', `Failed to delete product: EGP{error.message}`);
+        }
+      }
+
+      async function deleteCategory(id) {
+        try {
+          const { error } = await supabase
+            .from('categories')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          showToast('success', 'Success', 'Category deleted successfully');
+          loadCategories();
+        } catch (error) {
+          showToast('error', 'Error', `Failed to delete category: ${error.message}`);
+        }
+      }
+
+      async function deleteAttribute(id) {
+        try {
+          const { error } = await supabase
+            .from('attributes')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          showToast('success', 'Success', 'Attribute deleted successfully');
+          loadAttributes();
+        } catch (error) {
+          showToast('error', 'Error', `Failed to delete attribute: ${error.message}`);
+        }
+      }
+
+      async function deleteOffer(id) {
+        try {
+          const { error } = await supabase
+            .from('offers')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          showToast('success', 'Success', 'Offer deleted successfully');
+          loadOffers();
+        } catch (error) {
+          showToast('error', 'Error', `Failed to delete offer: ${error.message}`);
+        }
+      }
+
+      async function deleteGovernorate(id) {
+        try {
+          const { error } = await supabase
+            .from('shipping_governorates')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          showToast('success', 'Success', 'Governorate deleted successfully');
+          loadShippingGovernorates();
+        } catch (error) {
+          showToast('error', 'Error', `Failed to delete governorate: ${error.message}`);
+        }
+      }
+
+      async function deleteTestimonial(id) {
+        try {
+          const { error } = await supabase
+            .from('testimonials')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          showToast('success', 'Success', 'Testimonial deleted successfully');
+          loadTestimonials();
+        } catch (error) {
+          showToast('error', 'Error', `Failed to delete testimonial: ${error.message}`);
+        }
+      }
+
+
+      // Close Testimonial Modal
+      testimonialClose.addEventListener('click', () => {
+        testimonialModal.classList.add('modal-hidden');
+      });
+
+      // Load initial data for all tabs
+      await loadTabData('products');
+    });
+
+    // Show toast notification
+    function showToast(type, title, message) {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toast-title');
+      const toastMessage = document.getElementById('toast-message');
+      const successIcon = document.querySelector('.success-icon');
+      const errorIcon = document.querySelector('.error-icon');
+      
+      toast.className = 'toast';
+      toast.classList.add(`toast-${type}`);
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+      
+      if (successIcon) successIcon.classList.add('modal-hidden');
+      if (errorIcon) errorIcon.classList.add('modal-hidden');
+      
+      if (type === 'success' && successIcon) {
+        successIcon.classList.remove('modal-hidden');
+      } else if (type === 'error' && errorIcon) {
+        errorIcon.classList.remove('modal-hidden');
+      }
+      
+      toast.classList.remove('modal-hidden');
+      
+      setTimeout(() => {
+        toast.classList.add('modal-hidden');
+      }, 3000);
+    }
+
+    // Load data for a specific tab
+    async function loadTabData(tabName) {
+      switch(tabName) {
+        case 'products':
+          await loadProducts();
+          break;
+        case 'categories':
+          await loadCategories();
+          break;
+        case 'attributes':
+          await loadAttributes();
+          break;
+        case 'orders':
+          await loadOrders();
+          break;
+        case 'offers':
+          await loadOffers();
+          break;
+        case 'shipping':
+          await loadShippingGovernorates();
+          break;
+        case 'testimonials':
+          await loadTestimonials();
+          break;
+      }
+    }
+
+    // Products
+    async function loadProducts() {
+      try {
+        const { data: products, error } = await supabase
+          .from('products')
+          .select('*, categories(name)');
+
+        if (error) throw error;
+
+        const tableBody = document.querySelector('#products-table tbody');
+        tableBody.innerHTML = '';
+
+        products.forEach(product => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${product.name}</td>
+            <td>$${product.price.toFixed(2)}</td>
+            <td>${product.categories ? product.categories.name : 'N/A'}</td>
+            <td>${product.in_stock ? '<span class="badge badge-primary">In Stock</span>' : '<span class="badge badge-outline">Out of Stock</span>'}</td>
+            <td>
+              <div class="flex gap-2">
+                <button class="btn btn-outline edit-product" data-id="${product.id}">Edit</button>
+                <button class="btn btn-destructive delete-product" data-id="${product.id}">Delete</button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to edit and delete buttons
+        document.querySelectorAll('.edit-product').forEach(button => {
+          button.addEventListener('click', () => editProduct(button.getAttribute('data-id')));
+        });
+
+        document.querySelectorAll('.delete-product').forEach(button => {
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = button.getAttribute('data-id');
+            confirmDelete('product', id);
+          });
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load products: ${error.message}`);
+      }
+    }
+
+    // Product Modal
+    const productModal = document.getElementById('product-modal');
+    const productForm = document.getElementById('product-form');
+    const productModalTitle = document.getElementById('product-modal-title');
+    const productId = document.getElementById('product-id');
+    const productName = document.getElementById('product-name');
+    const productDescription = document.getElementById('product-description');
+    const productPrice = document.getElementById('product-price');
+    const productCategory = document.getElementById('product-category');
+    const productImage = document.getElementById('product-image');
+    const productInStock = document.getElementById('product-in-stock');
+    const productCancel = document.getElementById('product-cancel');
+
+    // Cancel Product Modal
+    productCancel.addEventListener('click', () => {
+      productModal.classList.add('modal-hidden');
+    });
+    const addProductBtn = document.getElementById('add-product-btn');
+
+    // Current state
+    let currentDeleteItem = null;
+
+    // Load categories for product form
+    async function loadCategoriesForSelect() {
+      try {
+        const { data: categories, error } = await supabase
+          .from('categories')
+          .select('*');
+
+        if (error) throw error;
+
+        productCategory.innerHTML = '<option value="">Select Category</option>';
+        categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category.id;
+          option.textContent = category.name;
+          productCategory.appendChild(option);
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load categories: ${error.message}`);
+      }
+    }
+
+      // Add Product
+      addProductBtn.addEventListener('click', () => {
+        productModalTitle.textContent = 'Add Product';
+        productForm.reset();
+        productId.value = '';
+        productInStock.checked = true;
+        loadCategoriesForSelect();
+        productModal.classList.remove('modal-hidden');
+      });
+
+    // Edit Product
+    async function editProduct(id) {
+      try {
+        const { data: product, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) throw error;
+
+        productModalTitle.textContent = 'Edit Product';
+        productId.value = product.id;
+        productName.value = product.name;
+        productDescription.value = product.description || '';
+        productPrice.value = product.price;
+        productImage.value = product.image_url || '';
+        productInStock.checked = product.in_stock;
+
+        // Load hardcoded size prices
+        document.getElementById('product-price-small').value = product.price_small || '0.00';
+        document.getElementById('product-price-medium').value = product.price_medium || '0.00';
+        document.getElementById('product-price-large').value = product.price_large || '0.00';
+
+        await loadCategoriesForSelect();
+        productCategory.value = product.category_id || '';
+
+        productModal.classList.remove('modal-hidden');
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load product: ${error.message}`);
+      }
+    }
+
+    // Cancel Product Modal
+    productCancel.addEventListener('click', () => {
+      productModal.classList.add('hidden');
+    });
+
+    // Submit Product Form
+    productForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const product = {
+        name: productName.value,
+        description: productDescription.value,
+        price: parseFloat(productPrice.value),
+        category_id: productCategory.value || null,
+        image_url: productImage.value,
+        in_stock: productInStock.checked,
+        price_small: parseFloat(document.getElementById('product-price-small').value),
+        price_medium: parseFloat(document.getElementById('product-price-medium').value),
+        price_large: parseFloat(document.getElementById('product-price-large').value)
+      };
+
+      try {
+        let result;
+
+        if (productId.value) {
+          // Update existing product
+          result = await supabase
+            .from('products')
+            .update(product)
+            .eq('id', productId.value);
+        } else {
+          // Insert new product
+          result = await supabase
+            .from('products')
+            .insert(product);
+        }
+
+        if (result.error) throw result.error;
+
+        productModal.classList.add('modal-hidden');
+        showToast('success', 'Success', `Product ${productId.value ? 'updated' : 'added'} successfully`);
+        loadProducts();
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to save product: ${error.message}`);
+      }
+    });
+
+    // Categories
+    async function loadCategories() {
+      try {
+        const { data: categories, error } = await supabase
+          .from('categories')
+          .select('*, parent:parent_id(name)');
+
+        if (error) throw error;
+
+        const tableBody = document.querySelector('#categories-table tbody');
+        tableBody.innerHTML = '';
+
+        categories.forEach(category => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${category.name}</td>
+            <td>${category.parent ? category.parent.name : 'None'}</td>
+            <td>
+              <div class="flex gap-2">
+                <button class="btn btn-outline edit-category" data-id="${category.id}">Edit</button>
+                <button class="btn btn-destructive delete-category" data-id="${category.id}">Delete</button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to edit and delete buttons
+        document.querySelectorAll('.edit-category').forEach(button => {
+          button.addEventListener('click', () => editCategory(button.getAttribute('data-id')));
+        });
+
+        document.querySelectorAll('.delete-category').forEach(button => {
+          button.addEventListener('click', (e) => {
+            console.log('Delete category button clicked');
+            e.preventDefault();
+            const id = button.getAttribute('data-id');
+            confirmDelete('category', id);
+          });
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load categories: ${error.message}`);
+      }
+    }
+
+    // Category Modal
+    const categoryModal = document.getElementById('category-modal');
+    const categoryForm = document.getElementById('category-form');
+    const categoryModalTitle = document.getElementById('category-modal-title');
+    const categoryId = document.getElementById('category-id');
+    const categoryName = document.getElementById('category-name');
+    const categoryParent = document.getElementById('category-parent');
+    const categoryCancel = document.getElementById('category-cancel');
+    const addCategoryBtn = document.getElementById('add-category-btn');
+
+    // Load parent categories for category form
+    async function loadParentCategories(excludeId = null) {
+      try {
+        const { data: categories, error } = await supabase
+          .from('categories')
+          .select('*');
+
+        if (error) throw error;
+
+        categoryParent.innerHTML = '<option value="">None</option>';
+        categories.forEach(category => {
+          // Skip the current category to prevent circular reference
+          if (excludeId && category.id === excludeId) return;
+          
+          const option = document.createElement('option');
+          option.value = category.id;
+          option.textContent = category.name;
+          categoryParent.appendChild(option);
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load parent categories: ${error.message}`);
+      }
+    }
+
+    // Add Category
+    addCategoryBtn.addEventListener('click', () => {
+      categoryModalTitle.textContent = 'Add Category';
+      categoryForm.reset();
+      categoryId.value = '';
+      loadParentCategories();
+      categoryModal.classList.remove('hidden');
+    });
+
+    // Edit Category
+    async function editCategory(id) {
+      try {
+        const { data: category, error } = await supabase
+          .from('categories')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) throw error;
+
+        categoryModalTitle.textContent = 'Edit Category';
+        categoryId.value = category.id;
+        categoryName.value = category.name;
+
+        await loadParentCategories(category.id);
+        categoryParent.value = category.parent_id || '';
+
+        categoryModal.classList.remove('modal-hidden');
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load category: ${error.message}`);
+      }
+    }
+
+    // Cancel Category Modal
+    categoryCancel.addEventListener('click', () => {
+      categoryModal.classList.add('hidden');
+    });
+
+    // Submit Category Form
+    categoryForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const category = {
+        name: categoryName.value,
+        parent_id: categoryParent.value || null
+      };
+
+      try {
+        let result;
+
+        if (categoryId.value) {
+          // Update existing category
+          result = await supabase
+            .from('categories')
+            .update(category)
+            .eq('id', categoryId.value);
+        } else {
+          // Insert new category
+          result = await supabase
+            .from('categories')
+            .insert(category);
+        }
+
+        if (result.error) throw result.error;
+
+        categoryModal.classList.add('modal-hidden');
+        showToast('success', 'Success', `Category ${categoryId.value ? 'updated' : 'added'} successfully`);
+        loadCategories();
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to save category: ${error.message}`);
+      }
+    });
+
+    // Attributes
+    async function loadAttributes() {
+      try {
+        const { data: attributes, error } = await supabase
+          .from('attributes')
+          .select('*');
+
+        if (error) throw error;
+
+        const tableBody = document.querySelector('#attributes-table tbody');
+        tableBody.innerHTML = '';
+
+        attributes.forEach(attribute => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${attribute.name}</td>
+            <td>${attribute.unit || 'N/A'}</td>
+            <td>
+              <div class="flex gap-2">
+                <button class="btn btn-outline edit-attribute" data-id="${attribute.id}">Edit</button>
+                <button class="btn btn-destructive delete-attribute" data-id="${attribute.id}">Delete</button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to edit and delete buttons
+        document.querySelectorAll('.edit-attribute').forEach(button => {
+          button.addEventListener('click', () => editAttribute(button.getAttribute('data-id')));
+        });
+
+        document.querySelectorAll('.delete-attribute').forEach(button => {
+          button.addEventListener('click', (e) => {
+            console.log('Delete attribute button clicked');
+            e.preventDefault();
+            const id = button.getAttribute('data-id');
+            confirmDelete('attribute', id);
+          });
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load attributes: ${error.message}`);
+      }
+    }
+
+    // Attribute Modal
+    const attributeModal = document.getElementById('attribute-modal');
+    const attributeForm = document.getElementById('attribute-form');
+    const attributeModalTitle = document.getElementById('attribute-modal-title');
+    const attributeId = document.getElementById('attribute-id');
+    const attributeName = document.getElementById('attribute-name');
+    const attributeUnit = document.getElementById('attribute-unit');
+    const attributeCancel = document.getElementById('attribute-cancel');
+    const addAttributeBtn = document.getElementById('add-attribute-btn');
+
+    // Add Attribute
+    addAttributeBtn.addEventListener('click', () => {
+      attributeModalTitle.textContent = 'Add Attribute';
+      attributeForm.reset();
+      attributeId.value = '';
+      attributeModal.classList.remove('hidden');
+    });
+
+    // Edit Attribute
+    async function editAttribute(id) {
+      try {
+        const { data: attribute, error } = await supabase
+          .from('attributes')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) throw error;
+
+        attributeModalTitle.textContent = 'Edit Attribute';
+        attributeId.value = attribute.id;
+        attributeName.value = attribute.name;
+        attributeUnit.value = attribute.unit || '';
+
+        attributeModal.classList.remove('modal-hidden');
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load attribute: ${error.message}`);
+      }
+    }
+
+    // Cancel Attribute Modal
+    attributeCancel.addEventListener('click', () => {
+      attributeModal.classList.add('hidden');
+    });
+
+    // Submit Attribute Form
+    attributeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const attribute = {
+        name: attributeName.value,
+        unit: attributeUnit.value || null
+      };
+
+      try {
+        let result;
+
+        if (attributeId.value) {
+          // Update existing attribute
+          result = await supabase
+            .from('attributes')
+            .update(attribute)
+            .eq('id', attributeId.value);
+        } else {
+          // Insert new attribute
+          result = await supabase
+            .from('attributes')
+            .insert(attribute);
+        }
+
+        if (result.error) throw result.error;
+
+        attributeModal.classList.add('modal-hidden');
+        showToast('success', 'Success', `Attribute ${attributeId.value ? 'updated' : 'added'} successfully`);
+        loadAttributes();
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to save attribute: ${error.message}`);
+      }
+    });
+
+    // Orders
+    async function loadOrders() {
+      try {
+        const { data: orders, error } = await supabase
+          .from('orders')
+          .select('*, profiles(full_name)');
+
+        if (error) throw error;
+
+        const tableBody = document.querySelector('#orders-table tbody');
+        tableBody.innerHTML = '';
+
+        orders.forEach(order => {
+          const row = document.createElement('tr');
+          const date = new Date(order.created_at).toLocaleDateString();
+          row.innerHTML = `
+            <td>${order.id.substring(0, 8)}...</td>
+            <td>${order.profiles ? order.profiles.full_name : 'Guest'}</td>
+            <td>$${order.total_price.toFixed(2)}</td>
+            <td>
+              <span class="badge ${getStatusBadgeClass(order.status)}">
+                ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+              </span>
+            </td>
+            <td>${date}</td>
+            <td>
+              <button class="btn btn-outline view-order" data-id="${order.id}">View Details</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to view buttons
+        document.querySelectorAll('.view-order').forEach(button => {
+          button.addEventListener('click', () => viewOrderDetails(button.getAttribute('data-id')));
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load orders: ${error.message}`);
+      }
+    }
+
+    // Helper function to get badge class based on order status
+    function getStatusBadgeClass(status) {
+      switch(status) {
+        case 'pending':
+          return 'badge-outline';
+        case 'processing':
+          return 'badge-primary';
+        case 'shipped':
+          return 'badge-secondary';
+        case 'delivered':
+          return 'badge-primary';
+        case 'cancelled':
+          return 'badge-destructive';
+        default:
+          return 'badge-outline';
+      }
+    }
+
+    // Order Detail Modal
+    const orderDetailModal = document.getElementById('order-detail-modal');
+    const orderDetailContent = document.getElementById('order-detail-content');
+    const orderStatus = document.getElementById('order-status');
+    const updateOrderStatus = document.getElementById('update-order-status');
+    const orderDetailClose = document.getElementById('order-detail-close');
+    let currentOrderId = null;
+
+    // View Order Details
+    async function viewOrderDetails(id) {
+      try {
+        const { data: order, error: orderError } = await supabase
+          .from('orders')
+          .select('*, profiles(full_name, phone, address, shipping_governorates(name))')
+          .eq('id', id)
+          .single();
+
+        if (orderError) throw orderError;
+
+        const { data: orderItems, error: itemsError } = await supabase
+          .from('order_items')
+          .select('*, products(name, image_url)')
+          .eq('order_id', id);
+
+        if (itemsError) throw itemsError;
+
+        // Set current order ID for status update
+        currentOrderId = order.id;
+        orderStatus.value = order.status;
+
+        // Format date
+        const date = new Date(order.created_at).toLocaleString();
+
+        // Build HTML for order details
+        let html = `
+          <div class="mb-4">
+            <h4 class="font-semibold">Order Information</h4>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              <div>Order ID:</div>
+              <div>${order.id}</div>
+              <div>Date:</div>
+              <div>${date}</div>
+              <div>Status:</div>
+              <div>
+                <span class="badge ${getStatusBadgeClass(order.status)}">
+                  ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                </span>
+              </div>
+              <div>Payment Method:</div>
+              <div>${order.payment_method.toUpperCase()}</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h4 class="font-semibold">Customer Information</h4>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              <div>Name:</div>
+              <div>${order.profiles ? order.profiles.full_name : 'Guest'}</div>
+              <div>Phone:</div>
+              <div>${order.profiles ? order.profiles.phone : 'N/A'}</div>
+            </div>
+          </div>
+        `;
+
+        // Shipping address
+        if (order.shipping_address) {
+          const address = order.shipping_address;
+          html += `
+            <div class="mb-4">
+              <h4 class="font-semibold">Shipping Address</h4>
+              <div class="grid grid-cols-2 gap-2 mt-2">
+                <div>Address:</div>
+                <div>${address.address || 'N/A'}</div>
+                <div>City:</div>
+                <div>${address.city || 'N/A'}</div>
+                <div>Governorate:</div>
+                <div>${address.governorate || 'N/A'}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        // Order items
+        html += `
+          <div class="mb-4">
+            <h4 class="font-semibold">Order Items</h4>
+            <div class="table-container mt-2">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+        `;
+
+        orderItems.forEach(item => {
+          html += `
+            <tr>
+              <td>
+                <div class="flex items-center gap-2">
+                  <div class="w-10 h-10 rounded overflow-hidden">
+                    <img src="${item.products.image_url || '/placeholder-coffee.jpg'}" alt="${item.products.name}" class="w-full h-full object-cover">
+                  </div>
+                  <div>${item.products.name}</div>
+                </div>
+              </td>
+              <td>$${item.price.toFixed(2)}</td>
+              <td>${item.quantity}</td>
+              <td>$${(item.price * item.quantity).toFixed(2)}</td>
+            </tr>
+          `;
+        });
+
+        html += `
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        // Order summary
+        html += `
+          <div class="mb-4">
+            <h4 class="font-semibold">Order Summary</h4>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              <div>Subtotal:</div>
+              <div>$${order.subtotal ? order.subtotal.toFixed(2) : '0.00'}</div>
+              <div>Shipping Fee:</div>
+              <div>$${order.shipping_fee ? order.shipping_fee.toFixed(2) : '0.00'}</div>
+        `;
+
+        if (order.discount_amount > 0 || order.discount_percentage > 0) {
+          html += `
+              <div>Discount:</div>
+              <div>$${order.discount_amount.toFixed(2)} ${order.discount_percentage > 0 ? `(${order.discount_percentage}%)` : ''}</div>
+          `;
+        }
+
+        html += `
+              <div class="font-semibold">Total:</div>
+              <div class="font-semibold">$${order.total_price.toFixed(2)}</div>
+            </div>
+          </div>
+        `;
+
+        orderDetailContent.innerHTML = html;
+        orderDetailModal.classList.remove('modal-hidden');
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load order details: ${error.message}`);
+      }
+    }
+
+    // Update Order Status
+    updateOrderStatus.addEventListener('click', async () => {
+      if (!currentOrderId) return;
+
+      try {
+        const { error } = await supabase
+          .from('orders')
+          .update({ status: orderStatus.value })
+          .eq('id', currentOrderId);
+
+        if (error) throw error;
+
+        showToast('success', 'Success', 'Order status updated successfully');
+        viewOrderDetails(currentOrderId); // Refresh order details
+        loadOrders(); // Refresh orders list
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to update order status: ${error.message}`);
+      }
+    });
+
+    // Close Order Detail Modal
+    orderDetailClose.addEventListener('click', () => {
+        orderDetailModal.classList.add('modal-hidden');
+      currentOrderId = null;
+    });
+
+    // Offers
+    async function loadOffers() {
+      try {
+        const { data: offers, error } = await supabase
+          .from('offers')
+          .select('*');
+
+        if (error) throw error;
+
+        const tableBody = document.querySelector('#offers-table tbody');
+        tableBody.innerHTML = '';
+
+        offers.forEach(offer => {
+          const row = document.createElement('tr');
+          const date = new Date(offer.created_at).toLocaleDateString();
+          row.innerHTML = `
+            <td>${offer.title}</td>
+            <td>${offer.offer_type.charAt(0).toUpperCase() + offer.offer_type.slice(1)}</td>
+            <td>${offer.is_active ? '<span class="badge badge-primary">Active</span>' : '<span class="badge badge-outline">Inactive</span>'}</td>
+            <td>${date}</td>
+            <td>
+              <div class="flex gap-2">
+                <button class="btn btn-outline edit-offer" data-id="${offer.id}">Edit</button>
+                <button class="btn btn-destructive delete-offer" data-id="${offer.id}">Delete</button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to edit and delete buttons
+        document.querySelectorAll('.edit-offer').forEach(button => {
+          button.addEventListener('click', () => editOffer(button.getAttribute('data-id')));
+        });
+
+        document.querySelectorAll('.delete-offer').forEach(button => {
+          button.addEventListener('click', (e) => {
+            console.log('Delete offer button clicked');
+            e.preventDefault();
+            const id = button.getAttribute('data-id');
+            confirmDelete('offer', id);
+          });
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load offers: ${error.message}`);
+      }
+    }
+
+    // Offer Modal
+    const offerModal = document.getElementById('offer-modal');
+    const offerForm = document.getElementById('offer-form');
+    const offerModalTitle = document.getElementById('offer-modal-title');
+    const offerId = document.getElementById('offer-id');
+    const offerTitle = document.getElementById('offer-title');
+    const offerDescription = document.getElementById('offer-description');
+    const offerType = document.getElementById('offer-type');
+    const offerImage = document.getElementById('offer-image');
+    const offerActive = document.getElementById('offer-active');
+    const offerProducts = document.getElementById('offer-products');
+    const addOfferProductBtn = document.getElementById('add-offer-product');
+    const offerCancel = document.getElementById('offer-cancel');
+    const addOfferBtn = document.getElementById('add-offer-btn');
+    let offerProductsList = [];
+
+    // Add Offer
+    addOfferBtn.addEventListener('click', () => {
+      offerModalTitle.textContent = 'Add Offer';
+      offerForm.reset();
+      offerId.value = '';
+      offerActive.checked = true;
+      offerProductsList = [];
+      renderOfferProducts();
+      offerModal.classList.remove('hidden');
+    });
+
+    // Edit Offer
+    async function editOffer(id) {
+      try {
+        const { data: offer, error: offerError } = await supabase
+          .from('offers')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (offerError) throw offerError;
+
+        const { data: offerProducts, error: productsError } = await supabase
+          .from('offer_products')
+          .select('*, products(name)')
+          .eq('offer_id', id);
+
+        if (productsError) throw productsError;
+
+        offerModalTitle.textContent = 'Edit Offer';
+        offerId.value = offer.id;
+        offerTitle.value = offer.title;
+        offerDescription.value = offer.description || '';
+        offerType.value = offer.offer_type;
+        offerImage.value = offer.image_url || '';
+        offerActive.checked = offer.is_active;
+
+        offerProductsList = offerProducts.map(op => ({
+          id: op.id,
+          product_id: op.product_id,
+          product_name: op.products.name,
+          discount_type: op.discount_type,
+          discount_value: op.discount_value,
+          new_price: op.new_price
+        }));
+
+        renderOfferProducts();
+        offerModal.classList.remove('modal-hidden');
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load offer: ${error.message}`);
+      }
+    }
+
+    // Render Offer Products
+    function renderOfferProducts() {
+      offerProducts.innerHTML = '';
+
+      if (offerProductsList.length === 0) {
+        offerProducts.innerHTML = '<p class="text-muted-foreground">No products added to this offer yet.</p>';
+        return;
+      }
+
+      offerProductsList.forEach((product, index) => {
+        const productDiv = document.createElement('div');
+        productDiv.className = 'flex items-center gap-2 p-2 border border-border rounded-md';
+        productDiv.innerHTML = `
+          <div class="flex-1">
+            <div class="font-semibold">${product.product_name}</div>
+            <div class="text-sm text-muted-foreground">
+              ${product.discount_type === 'percentage' ? `${product.discount_value}% off` : `$${product.discount_value} off`}
+              ${product.new_price ? ` - New price: $${product.new_price}` : ''}
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline remove-offer-product" data-index="${index}">Remove</button>
+        `;
+        offerProducts.appendChild(productDiv);
+      });
+
+      // Add event listeners to remove buttons
+      document.querySelectorAll('.remove-offer-product').forEach(button => {
+        button.addEventListener('click', () => {
+          const index = parseInt(button.getAttribute('data-index'));
+          offerProductsList.splice(index, 1);
+          renderOfferProducts();
+        });
+      });
+    }
+
+    // Add Product to Offer
+    addOfferProductBtn.addEventListener('click', async () => {
+      try {
+        const { data: products, error } = await supabase
+          .from('products')
+          .select('id, name, price');
+
+        if (error) throw error;
+
+        // Create a simple modal to select a product
+        const productSelectionModal = document.createElement('div');
+        productSelectionModal.className = 'modal-backdrop';
+        productSelectionModal.innerHTML = `
+          <div class="modal p-6">
+            <h3 class="text-xl font-semibold mb-4">Add Product to Offer</h3>
+            <div class="mb-4">
+              <label class="block mb-2">Select Product</label>
+              <select id="product-select" class="select">
+                <option value="">Select a product</option>
+                ${products.map(p => `<option value="${p.id}" data-price="${p.price}" data-name="${p.name}">${p.name} - $${p.price.toFixed(2)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2">Discount Type</label>
+              <select id="discount-type" class="select">
+                <option value="percentage">Percentage</option>
+                <option value="fixed">Fixed Amount</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2">Discount Value</label>
+              <input type="number" id="discount-value" class="input" step="0.01" min="0" required>
+            </div>
+            <div class="flex justify-end gap-2">
+              <button type="button" class="btn btn-outline" id="product-selection-cancel">Cancel</button>
+              <button type="button" class="btn btn-primary" id="product-selection-add">Add</button>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(productSelectionModal);
+
+        // Cancel button
+        document.getElementById('product-selection-cancel').addEventListener('click', () => {
+          document.body.removeChild(productSelectionModal);
+        });
+
+        // Add button
+        document.getElementById('product-selection-add').addEventListener('click', () => {
+          const productSelect = document.getElementById('product-select');
+          const discountType = document.getElementById('discount-type').value;
+          const discountValue = parseFloat(document.getElementById('discount-value').value);
+
+          if (!productSelect.value || isNaN(discountValue) || discountValue <= 0) {
+            showToast('error', 'Error', 'Please select a product and enter a valid discount value');
+            return;
+          }
+
+          const selectedOption = productSelect.options[productSelect.selectedIndex];
+          const productId = productSelect.value;
+          const productName = selectedOption.getAttribute('data-name');
+          const productPrice = parseFloat(selectedOption.getAttribute('data-price'));
+
+          // Calculate new price
+          let newPrice = null;
+          if (discountType === 'percentage') {
+            newPrice = productPrice * (1 - (discountValue / 100));
+          } else {
+            newPrice = productPrice - discountValue;
+          }
+
+          // Ensure new price is not negative
+          if (newPrice < 0) newPrice = 0;
+
+          // Add to offer products list
+          offerProductsList.push({
+            product_id: productId,
+            product_name: productName,
+            discount_type: discountType,
+            discount_value: discountValue,
+            new_price: newPrice.toFixed(2)
+          });
+
+          renderOfferProducts();
+          document.body.removeChild(productSelectionModal);
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load products: ${error.message}`);
+      }
+    });
+
+    // Cancel Offer Modal
+    offerCancel.addEventListener('click', () => {
+      offerModal.classList.add('hidden');
+    });
+
+    // Submit Offer Form
+    offerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const offer = {
+        title: offerTitle.value,
+        description: offerDescription.value,
+        offer_type: offerType.value,
+        image_url: offerImage.value,
+        is_active: offerActive.checked
+      };
+
+      try {
+        let offerId;
+
+        if (document.getElementById('offer-id').value) {
+          // Update existing offer
+          const { error } = await supabase
+            .from('offers')
+            .update(offer)
+            .eq('id', document.getElementById('offer-id').value);
+
+          if (error) throw error;
+          offerId = document.getElementById('offer-id').value;
+
+          // Delete existing offer products
+          const { error: deleteError } = await supabase
+            .from('offer_products')
+            .delete()
+            .eq('offer_id', offerId);
+
+          if (deleteError) throw deleteError;
+        } else {
+          // Insert new offer
+          const { data, error } = await supabase
+            .from('offers')
+            .insert(offer)
+            .select();
+
+          if (error) throw error;
+          offerId = data[0].id;
+        }
+
+        // Insert offer products
+        if (offerProductsList.length > 0) {
+          const offerProducts = offerProductsList.map(product => ({
+            offer_id: offerId,
+            product_id: product.product_id,
+            discount_type: product.discount_type,
+            discount_value: product.discount_value,
+            new_price: product.new_price
+          }));
+
+          const { error } = await supabase
+            .from('offer_products')
+            .insert(offerProducts);
+
+          if (error) throw error;
+        }
+
+        offerModal.classList.add('modal-hidden');
+        showToast('success', 'Success', `Offer ${document.getElementById('offer-id').value ? 'updated' : 'added'} successfully`);
+        loadOffers();
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to save offer: ${error.message}`);
+      }
+    });
+
+    // Shipping Governorates
+    async function loadShippingGovernorates() {
+      try {
+        const { data: governorates, error } = await supabase
+          .from('shipping_governorates')
+          .select('*');
+
+        if (error) throw error;
+
+        const tableBody = document.querySelector('#shipping-table tbody');
+        tableBody.innerHTML = '';
+
+        governorates.forEach(governorate => {
+          const row = document.createElement('tr');
+          const date = new Date(governorate.created_at).toLocaleDateString();
+          row.innerHTML = `
+            <td>${governorate.name}</td>
+            <td>$${governorate.shipping_fee.toFixed(2)}</td>
+            <td>${governorate.is_active ? '<span class="badge badge-primary">Active</span>' : '<span class="badge badge-outline">Inactive</span>'}</td>
+            <td>${date}</td>
+            <td>
+              <div class="flex gap-2">
+                <button class="btn btn-outline edit-governorate" data-id="${governorate.id}">Edit</button>
+                <button class="btn btn-destructive delete-governorate" data-id="${governorate.id}">Delete</button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to edit and delete buttons
+        document.querySelectorAll('.edit-governorate').forEach(button => {
+          button.addEventListener('click', () => editGovernorate(button.getAttribute('data-id')));
+        });
+
+        document.querySelectorAll('.delete-governorate').forEach(button => {
+          button.addEventListener('click', (e) => {
+            console.log('Delete governorate button clicked');
+            e.preventDefault();
+            const id = button.getAttribute('data-id');
+            confirmDelete('shipping_governorate', id);
+          });
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load shipping governorates: ${error.message}`);
+      }
+    }
+
+    // Governorate Modal
+    const governorateModal = document.getElementById('shipping-modal');
+    const governorateForm = document.getElementById('shipping-form');
+    const governorateModalTitle = document.getElementById('shipping-modal-title');
+    const governorateId = document.getElementById('shipping-id');
+    const governorateName = document.getElementById('shipping-name');
+    const governorateFee = document.getElementById('shipping-fee');
+    const governorateActive = document.getElementById('shipping-active');
+    const governorateCancel = document.getElementById('shipping-cancel');
+    const addGovernorateBtn = document.getElementById('add-shipping-btn');
+
+    // Add Governorate
+    addGovernorateBtn.addEventListener('click', () => {
+      governorateModalTitle.textContent = 'Add Shipping Governorate';
+      governorateForm.reset();
+      governorateId.value = '';
+      governorateActive.checked = true;
+      governorateModal.classList.remove('hidden');
+    });
+
+    // Edit Governorate
+    async function editGovernorate(id) {
+      try {
+        const { data: governorate, error } = await supabase
+          .from('shipping_governorates')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) throw error;
+
+        governorateModalTitle.textContent = 'Edit Shipping Governorate';
+        governorateId.value = governorate.id;
+        governorateName.value = governorate.name;
+        governorateFee.value = governorate.shipping_fee;
+        governorateActive.checked = governorate.is_active;
+        governorateModal.classList.remove('modal-hidden');
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load governorate: ${error.message}`);
+      }
+    }
+
+    // Cancel Governorate Modal
+    governorateCancel.addEventListener('click', () => {
+      governorateModal.classList.add('hidden');
+    });
+
+    // Submit Governorate Form
+    governorateForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const governorate = {
+        name: governorateName.value,
+        shipping_fee: parseFloat(governorateFee.value),
+        is_active: governorateActive.checked
+      };
+
+      try {
+        if (governorateId.value) {
+          // Update existing governorate
+          const { error } = await supabase
+            .from('shipping_governorates')
+            .update(governorate)
+            .eq('id', governorateId.value);
+
+          if (error) throw error;
+        } else {
+          // Insert new governorate
+          const { error } = await supabase
+            .from('shipping_governorates')
+            .insert(governorate);
+
+          if (error) throw error;
+        }
+
+        governorateModal.classList.add('modal-hidden');
+        showToast('success', 'Success', `Governorate ${governorateId.value ? 'updated' : 'added'} successfully`);
+        loadShippingGovernorates();
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to save governorate: ${error.message}`);
+      }
+    });
+
+    // Testimonials
+    async function loadTestimonials() {
+      try {
+        const { data: testimonials, error } = await supabase
+          .from('testimonials')
+          .select('*, profiles(full_name)');
+
+        if (error) throw error;
+
+        const tableBody = document.querySelector('#testimonials-table tbody');
+        tableBody.innerHTML = '';
+
+        testimonials.forEach(testimonial => {
+          const row = document.createElement('tr');
+          const date = new Date(testimonial.created_at).toLocaleDateString();
+          const userName = testimonial.profiles?.full_name || 'Unknown User';
+          row.innerHTML = `
+            <td>${userName}</td>
+            <td>${'★'.repeat(testimonial.rating) + '☆'.repeat(5 - testimonial.rating)}</td>
+            <td>${testimonial.message.substring(0, 50)}${testimonial.message.length > 50 ? '...' : ''}</td>
+            <td>${date}</td>
+            <td>
+              <div class="flex gap-2">
+                <button class="btn btn-outline view-testimonial" data-id="${testimonial.id}">View</button>
+                <button class="btn btn-destructive delete-testimonial" data-id="${testimonial.id}">Delete</button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to view and delete buttons
+        document.querySelectorAll('.view-testimonial').forEach(button => {
+          button.addEventListener('click', () => viewTestimonial(button.getAttribute('data-id')));
+        });
+
+        document.querySelectorAll('.delete-testimonial').forEach(button => {
+          button.addEventListener('click', (e) => {
+            console.log('Delete testimonial button clicked');
+            e.preventDefault();
+            const id = button.getAttribute('data-id');
+            confirmDelete('testimonial', id);
+          });
+        });
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load testimonials: ${error.message}`);
+      }
+    }
+
+
+
+
+    // View Testimonial
+    async function viewTestimonial(id) {
+      try {
+        const { data: testimonial, error } = await supabase
+          .from('testimonials')
+          .select('*, profiles(full_name)')
+          .eq('id', id)
+          .single();
+
+        if (error) throw error;
+
+        testimonialUserName.textContent = testimonial.profiles?.full_name || 'Unknown User';
+        testimonialRating.innerHTML = '★'.repeat(testimonial.rating) + '☆'.repeat(5 - testimonial.rating);
+        testimonialMessage.textContent = testimonial.message;
+        testimonialDate.textContent = new Date(testimonial.created_at).toLocaleString();
+        testimonialModal.classList.remove('modal-hidden');
+
+      } catch (error) {
+        showToast('error', 'Error', `Failed to load testimonial: ${error.message}`);
+      }
+    }
+
+
+
+</script>
+</body>
+</html>

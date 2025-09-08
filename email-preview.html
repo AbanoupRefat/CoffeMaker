@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoffeeCraft Email Preview</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      color: #5d4037;
+      border-bottom: 2px solid #8d6e63;
+      padding-bottom: 10px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .controls {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .preview-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .preview-box {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .preview-header {
+      background-color: #5d4037;
+      color: white;
+      padding: 10px 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .preview-content {
+      padding: 20px;
+      max-height: 600px;
+      overflow: auto;
+      border: 1px solid #eee;
+    }
+    .btn {
+      background-color: #795548;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #5d4037;
+    }
+    .btn-secondary {
+      background-color: #9e9e9e;
+    }
+    .btn-secondary:hover {
+      background-color: #757575;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    .tab.active {
+      border-bottom-color: #5d4037;
+      font-weight: bold;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>CoffeeCraft Email Preview</h1>
+  
+  <div class="container">
+    <div class="controls">
+      <div class="tabs">
+        <div class="tab active" data-tab="customer">Customer Email</div>
+        <div class="tab" data-tab="owner">Owner Email</div>
+      </div>
+      
+      <div id="customer-form" class="form-content">
+        <h2>Customer Order Confirmation</h2>
+        <div class="form-group">
+          <label for="customer-name">Customer Name</label>
+          <input type="text" id="customer-name" value="John Doe">
+        </div>
+        <div class="form-group">
+          <label for="customer-email">Customer Email</label>
+          <input type="email" id="customer-email" value="customer@example.com">
+        </div>
+        <div class="form-group">
+          <label for="order-number">Order Number</label>
+          <input type="text" id="order-number" value="ORD-1234">
+        </div>
+        <div class="form-group">
+          <label for="order-total">Order Total</label>
+          <input type="text" id="order-total" value="42.99">
+        </div>
+      </div>
+      
+      <div id="owner-form" class="form-content hidden">
+        <h2>Owner Order Notification</h2>
+        <div class="form-group">
+          <label for="owner-email">Owner Email</label>
+          <input type="email" id="owner-email" value="owner@coffeecraft.com">
+        </div>
+        <div class="form-group">
+          <label for="customer-address">Customer Address</label>
+          <input type="text" id="customer-address" value="123 Coffee St, Seattle, WA 98101">
+        </div>
+        <div class="form-group">
+          <label for="customer-phone">Customer Phone</label>
+          <input type="text" id="customer-phone" value="555-123-4567">
+        </div>
+        <div class="form-group">
+          <label for="order-notes">Order Notes</label>
+          <textarea id="order-notes" rows="3">Please leave at the front door.</textarea>
+        </div>
+      </div>
+      
+      <button id="generate-preview" class="btn">Generate Preview</button>
+    </div>
+    
+    <div class="preview-container">
+      <div class="preview-box">
+        <div class="preview-header">
+          <span id="preview-title">Email Preview</span>
+          <button id="refresh-preview" class="btn btn-secondary">Refresh</button>
+        </div>
+        <div id="preview-content" class="preview-content">
+          <p>Click "Generate Preview" to see the email template.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample order data template
+    function getOrderData() {
+      const isCustomerTab = document.querySelector('.tab.active').dataset.tab === 'customer';
+      
+      return {
+        orderNumber: document.getElementById('order-number').value,
+        orderDate: new Date().toISOString(),
+        orderTotal: parseFloat(document.getElementById('order-total').value),
+        items: [
+          {
+            id: 1,
+            name: 'Ethiopian Yirgacheffe',
+            price: 18.99,
+            quantity: 1,
+            options: {
+              grind: 'Whole Bean',
+              size: '12 oz'
+            }
+          },
+          {
+            id: 2,
+            name: 'Colombia Supremo',
+            price: 16.99,
+            quantity: 1,
+            options: {
+              grind: 'Espresso',
+              size: '12 oz'
+            }
+          },
+          {
+            id: 3,
+            name: 'Shipping',
+            price: 7.01,
+            quantity: 1
+          }
+        ],
+        customerInfo: {
+          fullName: document.getElementById('customer-name').value,
+          email: document.getElementById('customer-email').value,
+          phone: document.getElementById('customer-phone')?.value || '555-123-4567',
+          address: document.getElementById('customer-address')?.value || '123 Coffee St',
+          city: 'Seattle',
+          state: 'WA',
+          postalCode: '98101',
+          orderNotes: document.getElementById('order-notes')?.value || ''
+        }
+      };
+    }
+
+    // Generate email preview HTML
+    function generateEmailPreview() {
+      const orderData = getOrderData();
+      const isCustomerTab = document.querySelector('.tab.active').dataset.tab === 'customer';
+      const emailType = isCustomerTab ? 'customer' : 'owner';
+      
+      // This is a simplified version of the email templates
+      // In a real implementation, this would call the getEmailPreview function from emailService.js
+      
+      let html = '';
+      
+      if (emailType === 'customer') {
+        html = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 5px; overflow: hidden;">
+            <div style="background-color: #5d4037; padding: 20px; text-align: center;">
+              <h1 style="color: white; margin: 0;">CoffeeCraft</h1>
+            </div>
+            <div style="padding: 20px;">
+              <h2>Order Confirmation</h2>
+              <p>Dear ${orderData.customerInfo.fullName},</p>
+              <p>Thank you for your order! We've received your coffee order and it's being prepared with care.</p>
+              
+              <div style="background-color: #f5f5f5; border-radius: 5px; padding: 15px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Order Details</h3>
+                <p><strong>Order Number:</strong> ${orderData.orderNumber}</p>
+                <p><strong>Order Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <p><strong>Order Total:</strong> $${orderData.orderTotal.toFixed(2)}</p>
+              </div>
+              
+              <h3>Your Order</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                  <tr style="background-color: #f5f5f5;">
+                    <th style="text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">Item</th>
+                    <th style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">Qty</th>
+                    <th style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${orderData.items.map(item => `
+                    <tr>
+                      <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">
+                        ${item.name}
+                        ${item.options ? `<br><small>${Object.entries(item.options).map(([key, value]) => `${key}: ${value}`).join(', ')}</small>` : ''}
+                      </td>
+                      <td style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">${item.quantity}</td>
+                      <td style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">$${(item.price * item.quantity).toFixed(2)}</td>
+                    </tr>
+                  `).join('')}
+                  <tr>
+                    <td colspan="2" style="text-align: right; padding: 10px; font-weight: bold;">Total</td>
+                    <td style="text-align: right; padding: 10px; font-weight: bold;">$${orderData.orderTotal.toFixed(2)}</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <div style="margin-top: 30px;">
+                <p>Your order will be delivered to:</p>
+                <p>
+                  ${orderData.customerInfo.fullName}<br>
+                  ${orderData.customerInfo.address}<br>
+                  ${orderData.customerInfo.city}, ${orderData.customerInfo.state} ${orderData.customerInfo.postalCode}
+                </p>
+              </div>
+              
+              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                <p>If you have any questions about your order, please contact us at <a href="mailto:support@coffeecraft.com">support@coffeecraft.com</a>.</p>
+                <p>Thank you for choosing CoffeeCraft!</p>
+              </div>
+            </div>
+            <div style="background-color: #5d4037; color: white; padding: 15px; text-align: center;">
+              <p>&copy; ${new Date().getFullYear()} CoffeeCraft. All rights reserved.</p>
+            </div>
+          </div>
+        `;
+      } else {
+        html = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 5px; overflow: hidden;">
+            <div style="background-color: #5d4037; padding: 20px; text-align: center;">
+              <h1 style="color: white; margin: 0;">CoffeeCraft</h1>
+            </div>
+            <div style="padding: 20px;">
+              <h2>New Order Notification</h2>
+              <p>A new order has been placed on your store.</p>
+              
+              <div style="background-color: #f5f5f5; border-radius: 5px; padding: 15px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Order Details</h3>
+                <p><strong>Order Number:</strong> ${orderData.orderNumber}</p>
+                <p><strong>Order Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <p><strong>Order Total:</strong> $${orderData.orderTotal.toFixed(2)}</p>
+              </div>
+              
+              <h3>Customer Information</h3>
+              <p>
+                <strong>Name:</strong> ${orderData.customerInfo.fullName}<br>
+                <strong>Email:</strong> ${orderData.customerInfo.email}<br>
+                <strong>Phone:</strong> ${orderData.customerInfo.phone}<br>
+                <strong>Address:</strong> ${orderData.customerInfo.address}, ${orderData.customerInfo.city}, ${orderData.customerInfo.state} ${orderData.customerInfo.postalCode}
+              </p>
+              
+              ${orderData.customerInfo.orderNotes ? `
+                <div style="background-color: #fff3cd; border-radius: 5px; padding: 15px; margin: 20px 0;">
+                  <h3 style="margin-top: 0;">Order Notes</h3>
+                  <p>${orderData.customerInfo.orderNotes}</p>
+                </div>
+              ` : ''}
+              
+              <h3>Order Items</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                  <tr style="background-color: #f5f5f5;">
+                    <th style="text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">Item</th>
+                    <th style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">Qty</th>
+                    <th style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${orderData.items.map(item => `
+                    <tr>
+                      <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">
+                        ${item.name}
+                        ${item.options ? `<br><small>${Object.entries(item.options).map(([key, value]) => `${key}: ${value}`).join(', ')}</small>` : ''}
+                      </td>
+                      <td style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">${item.quantity}</td>
+                      <td style="text-align: right; padding: 10px; border-bottom: 1px solid #e0e0e0;">$${(item.price * item.quantity).toFixed(2)}</td>
+                    </tr>
+                  `).join('')}
+                  <tr>
+                    <td colspan="2" style="text-align: right; padding: 10px; font-weight: bold;">Total</td>
+                    <td style="text-align: right; padding: 10px; font-weight: bold;">$${orderData.orderTotal.toFixed(2)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background-color: #5d4037; color: white; padding: 15px; text-align: center;">
+              <p>&copy; ${new Date().getFullYear()} CoffeeCraft. All rights reserved.</p>
+            </div>
+          </div>
+        `;
+      }
+      
+      return html;
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          document.querySelectorAll('.form-content').forEach(content => {
+            content.classList.add('hidden');
+          });
+          
+          document.getElementById(`${this.dataset.tab}-form`).classList.remove('hidden');
+        });
+      });
+      
+      // Generate preview
+      document.getElementById('generate-preview').addEventListener('click', function() {
+        const previewContent = document.getElementById('preview-content');
+        const emailType = document.querySelector('.tab.active').dataset.tab;
+        document.getElementById('preview-title').textContent = 
+          emailType === 'customer' ? 'Customer Order Confirmation' : 'Owner Order Notification';
+        
+        previewContent.innerHTML = generateEmailPreview();
+      });
+      
+      // Refresh preview
+      document.getElementById('refresh-preview').addEventListener('click', function() {
+        const previewContent = document.getElementById('preview-content');
+        previewContent.innerHTML = generateEmailPreview();
+      });
+    });
+  </script>
+</body>
+</html>
