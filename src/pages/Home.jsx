@@ -19,7 +19,7 @@ const Home = () => {
       <section 
         className="relative h-screen flex items-center justify-center hero-bg"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/src/assets/prxn5iEqjUkk.jpg')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/prxn5iEqjUkk.jpg')`
         }}
       >
         <div className="text-center text-white max-w-4xl mx-auto px-4">
@@ -248,7 +248,7 @@ const Home = () => {
             </div>
             <div className="relative">
               <img
-                src="/src/assets/R8PPkbZfe6hI.jpg"
+                src="/assets/R8PPkbZfe6hI.jpg"
                 alt="Coffee plantation"
                 className="rounded-lg shadow-lg"
               />
