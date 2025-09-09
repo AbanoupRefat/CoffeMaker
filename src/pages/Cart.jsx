@@ -50,15 +50,15 @@ const Cart = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2">
             <div className="space-y-4">
               {cartItems.map((item) => (
-                <div key={`${item.id}-${item.size}`} className="bg-card rounded-lg border border-border p-6">
-                  <div className="flex flex-col sm:flex-row gap-4">
+                <div key={`${item.id}-${item.size}`} className="bg-card rounded-lg border border-border p-3 sm:p-4 md:p-6">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4">
                     {/* Product Image */}
-                    <div className="w-full sm:w-32 h-32 flex-shrink-0">
+                    <div className="w-full sm:w-24 md:w-32 h-24 sm:h-24 md:h-32 flex-shrink-0">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -68,16 +68,16 @@ const Cart = () => {
 
                     {/* Product Details */}
                     <div className="flex-1">
-                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 sm:mb-3 md:mb-4">
                         <div>
-                          <h3 className="text-lg font-semibold mb-1">{item.name}</h3>
-                          <p className="text-muted-foreground text-sm mb-2">Size: {item.size}</p>
-                          <p className="text-muted-foreground text-sm">{item.category}</p>
+                          <h3 className="text-base sm:text-lg font-semibold mb-0.5 sm:mb-1">{item.name}</h3>
+                          <p className="text-muted-foreground text-xs sm:text-sm mb-1 sm:mb-2">Size: {item.size}</p>
+                          <p className="text-muted-foreground text-xs sm:text-sm">{item.category}</p>
                         </div>
                         <div className="text-right">
-                          <div className="text-lg font-bold">EGP {item.price}</div>
+                          <div className="text-base sm:text-lg font-bold">EGP {item.price}</div>
                           {item.originalPrice && (
-                            <div className="text-sm text-muted-foreground line-through">
+                            <div className="text-xs sm:text-sm text-muted-foreground line-through">
                               EGP{item.originalPrice}
                             </div>
                           )}
@@ -86,23 +86,23 @@ const Cart = () => {
 
                       {/* Quantity Controls */}
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <span className="text-sm font-medium">Quantity:</span>
+                        <div className="flex items-center space-x-2 sm:space-x-3">
+                          <span className="text-xs sm:text-sm font-medium">Qty:</span>
                           <div className="flex items-center border border-border rounded-lg">
                             <button
                               onClick={() => handleQuantityChange(item.id, item.size, item.quantity - 1)}
                               disabled={item.quantity <= 1}
-                              className="p-2 hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="p-1 sm:p-1.5 md:p-2 hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              <Minus className="w-4 h-4" />
+                              <Minus className="w-3 h-3 sm:w-4 sm:h-4" />
                             </button>
-                            <span className="px-4 py-2 font-medium">{item.quantity}</span>
+                            <span className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-sm sm:text-base font-medium">{item.quantity}</span>
                             <button
                               onClick={() => handleQuantityChange(item.id, item.size, item.quantity + 1)}
                               disabled={item.quantity >= 10}
-                              className="p-2 hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="p-1 sm:p-1.5 md:p-2 hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              <Plus className="w-4 h-4" />
+                              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
                             </button>
                           </div>
                         </div>
@@ -110,18 +110,18 @@ const Cart = () => {
                         {/* Remove Button */}
                         <button
                           onClick={() => handleRemoveItem(item.id, item.size)}
-                          className="text-red-500 hover:text-red-700 transition-colors p-2"
+                          className="text-red-500 hover:text-red-700 transition-colors p-1 sm:p-1.5 md:p-2"
                           title="Remove item"
                         >
-                          <Trash2 className="w-5 h-5" />
+                          <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                         </button>
                       </div>
 
                       {/* Item Total */}
-                      <div className="mt-4 pt-4 border-t border-border">
+                      <div className="mt-2 sm:mt-3 md:mt-4 pt-2 sm:pt-3 md:pt-4 border-t border-border">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Item Total:</span>
-                          <span className="font-semibold">EGP{(item.price * item.quantity).toFixed(2)}</span>
+                          <span className="text-xs sm:text-sm text-muted-foreground">Item Total:</span>
+                          <span className="text-sm sm:text-base font-semibold">EGP{(item.price * item.quantity).toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
@@ -144,24 +144,24 @@ const Cart = () => {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-card rounded-lg border border-border p-6 sticky top-8">
-              <h2 className="text-xl font-semibold mb-6">Order Summary</h2>
+            <div className="bg-card rounded-lg border border-border p-3 sm:p-4 md:p-6 sticky top-8">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 md:mb-6">Order Summary</h2>
               
-              <div className="space-y-4 mb-6">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4 mb-3 sm:mb-4 md:mb-6">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span>EGP{getCartTotal().toFixed(2)}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Subtotal</span>
+                  <span className="text-sm sm:text-base">EGP{getCartTotal().toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Shipping</span>
-                  <span className="text-amber-600 text-sm italic">Added at checkout</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Shipping</span>
+                  <span className="text-amber-600 text-xs sm:text-sm italic">Added at checkout</span>
                 </div>
-                <div className="border-t border-border pt-4">
-                  <div className="flex justify-between text-lg font-semibold">
+                <div className="border-t border-border pt-2 sm:pt-3 md:pt-4">
+                  <div className="flex justify-between text-base sm:text-lg font-semibold">
                     <span>Subtotal</span>
                     <span>EGP{getCartTotal().toFixed(2)}</span>
                   </div>
-                  <div className="text-xs text-muted-foreground mt-2">
+                  <div className="text-xs text-muted-foreground mt-1 sm:mt-2">
                     Shipping fees will be calculated at checkout based on your governorate
                   </div>
                 </div>
@@ -170,34 +170,34 @@ const Cart = () => {
               {/* Checkout Button */}
               <Link
                 to="/checkout"
-                className="w-full btn-coffee px-6 py-3 rounded-lg font-semibold text-center block"
+                className="w-full btn-coffee px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 rounded-lg font-semibold text-center block text-sm sm:text-base"
               >
                 Proceed to Checkout
               </Link>
 
               {/* Security Notice */}
-              <div className="mt-4 text-center">
+              <div className="mt-2 sm:mt-3 md:mt-4 text-center">
                 <p className="text-xs text-muted-foreground">
                   🔒 Secure checkout with SSL encryption
                 </p>
               </div>
 
               {/* Payment Methods */}
-              <div className="mt-6 pt-6 border-t border-border">
-                <h3 className="font-medium mb-2">Payment Methods</h3>
-                <p className="text-sm text-muted-foreground">
+              <div className="mt-3 sm:mt-4 md:mt-6 pt-3 sm:pt-4 md:pt-6 border-t border-border">
+                <h3 className="text-sm sm:text-base font-medium mb-1 sm:mb-2">Payment Methods</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Only cash Available
                 </p>
                
               </div>
 
               {/* Estimated Delivery */}
-              <div className="mt-6 pt-6 border-t border-border">
-                <h3 className="font-medium mb-2">Estimated Delivery</h3>
-                <p className="text-sm text-muted-foreground">
+              <div className="mt-3 sm:mt-4 md:mt-6 pt-3 sm:pt-4 md:pt-6 border-t border-border">
+                <h3 className="text-sm sm:text-base font-medium mb-1 sm:mb-2">Estimated Delivery</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   📦 2-3 business days
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   🚚 Available shipping Any Place In Egypt
                 </p>
               </div>

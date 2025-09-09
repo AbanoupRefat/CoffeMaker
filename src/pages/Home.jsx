@@ -105,7 +105,7 @@ const Home = () => {
               <p className="text-red-500">Error loading products: {error}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {availableProducts.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -135,12 +135,12 @@ const Home = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3">
               {offerProducts.map((product) => (
                 <div key={product.id} className="bg-card rounded-lg shadow-sm border border-border overflow-hidden card-hover relative">
                   {(product.originalPrice || product.original_price) && (
-                    <div className="absolute top-4 left-4 z-10">
-                      <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    <div className="absolute top-2 left-2 z-10">
+                      <span className="bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-medium">
                         {Math.round((((product.originalPrice || product.original_price) - product.price) / (product.originalPrice || product.original_price)) * 100)}% OFF
                       </span>
                     </div>
@@ -152,21 +152,21 @@ const Home = () => {
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-                    <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{product.description}</p>
+                  <div className="p-3 sm:p-4 md:p-6">
+                    <h3 className="text-sm sm:text-base md:text-lg font-semibold mb-1 sm:mb-2 truncate">{product.name}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2">{product.description}</p>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-bold text-red-600">${product.price}</span>
+                      <div className="flex items-center space-x-1 sm:space-x-2">
+                        <span className="text-sm sm:text-base md:text-lg font-bold text-red-600">${product.price}</span>
                         {(product.originalPrice || product.original_price) && (
-                          <span className="text-sm text-muted-foreground line-through">
+                          <span className="text-xs sm:text-sm text-muted-foreground line-through">
                             ${product.originalPrice || product.original_price}
                           </span>
                         )}
                       </div>
                       <Link
                         to={`/products/${product.id}`}
-                        className="btn-coffee px-4 py-2 rounded-lg text-sm font-medium"
+                        className="btn-coffee px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-lg text-xs sm:text-sm font-medium"
                       >
                         Shop Now
                       </Link>
@@ -311,9 +311,9 @@ const Home = () => {
               <h3 className="font-semibold mb-4">Contact Info</h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li><a href="https://www.google.com/maps/search/?api=1&query=123%20Coffee%20Street,%20Bean%20City,%20BC%2012345" target="_blank" rel="noopener noreferrer" className="hover:underline">123 Coffee Street</a></li>
-                <li>Bean City, BC 12345</li>
+                
                 <li>WhatsApp: <a href="https://wa.me/01001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></li>
-                <li>Email: <a href="mailto:hello@coffeemaker.cr" className="hover:underline">hello@coffeemaker.cr</a></li>
+                
               </ul>
             </div>
           </div>
@@ -350,15 +350,15 @@ const ProductCard = ({ product }) => {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-        <div className="p-4">
-          <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+        <div className="p-2 sm:p-3 md:p-4">
+          <h3 className="font-semibold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors truncate">
             {product.name}
           </h3>
-          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2">
             {product.description}
           </p>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xl font-bold text-primary">
+          <div className="flex items-center justify-between mb-1 sm:mb-2">
+            <span className="text-sm sm:text-base md:text-lg font-bold text-primary">
               EGP{
                 selectedSize === 'Small' ? product.price_small :
                 selectedSize === 'Medium' ? product.price_medium :
@@ -368,20 +368,20 @@ const ProductCard = ({ product }) => {
             </span>
             {product.rating && (
               <div className="flex items-center">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="text-sm text-muted-foreground ml-1">
+                <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+                <span className="text-xs sm:text-sm text-muted-foreground ml-1">
                   {product.rating}
                 </span>
               </div>
             )}
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2 sm:gap-0">
-            <div className="flex gap-2 w-full sm:w-auto justify-center">
+          <div className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
+            <div className="flex gap-1 w-full justify-start">
               {['Small', 'Medium', 'Large'].map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-3 py-1 border rounded-md text-sm font-medium transition-all duration-200
+                  className={`px-2 py-0.5 border rounded-md text-xs font-medium transition-all duration-200
                     ${selectedSize === size
                       ? 'bg-primary text-primary-foreground border-primary shadow-sm'
                       : 'bg-background text-muted-foreground border-border hover:bg-muted'}
@@ -395,9 +395,9 @@ const ProductCard = ({ product }) => {
           <button
             onClick={handleAddToCart}
             disabled={!product.in_stock && !product.inStock}
-            className="w-full flex items-center justify-center gap-2 btn-coffee px-3 py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed mt-2 sm:mt-0"
+            className="w-full flex items-center justify-center gap-1 btn-coffee px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <ShoppingCart className="w-4 h-4" />
+            <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
             <span>Add to Cart</span>
           </button>
         </div>

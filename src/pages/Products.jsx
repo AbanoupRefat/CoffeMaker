@@ -169,7 +169,7 @@ const Products = () => {
               <p className="text-lg text-muted-foreground">No products found matching your criteria.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
               {currentProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -251,7 +251,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="group relative bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300">
+    <div className="group relative bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300 w-full">
       {/* Image */}
       <div className="aspect-square overflow-hidden rounded-t-lg cursor-pointer" onClick={handleViewDetails}>
         <img
@@ -262,39 +262,41 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-2 sm:p-3 md:p-4">
         <h3
-          className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors cursor-pointer"
+          className="font-semibold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors cursor-pointer truncate"
           onClick={handleViewDetails}
         >
           {product.name}
         </h3>
-        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{product.description}</p>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2">{product.description}</p>
 
-        {product.category && (
-          <span className="inline-block bg-muted text-muted-foreground px-2 py-1 rounded-full text-xs mb-3">
-            {product.category}
-          </span>
-        )}
+        <div className="flex flex-wrap gap-1 mb-1 sm:mb-2">
+          {product.category && (
+            <span className="inline-block bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full text-xs">
+              {product.category}
+            </span>
+          )}
+        </div>
 
         {product.rating && (
-          <div className="flex items-center gap-1 mb-3">
+          <div className="flex items-center gap-1 mb-1 sm:mb-2">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`w-4 h-4 ${
+                  className={`w-3 h-3 sm:w-4 sm:h-4 ${
                     i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
                   }`}
                 />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({product.reviews || 0})</span>
+            <span className="text-xs sm:text-sm text-muted-foreground">({product.reviews || 0})</span>
           </div>
         )}
 
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-xl font-bold text-primary">
+        <div className="flex items-center justify-between mb-1 sm:mb-2">
+          <span className="text-sm sm:text-base md:text-lg font-bold text-primary">
             EGP{
               selectedSize === 'Small' ? product.price_small :
               selectedSize === 'Medium' ? product.price_medium :
@@ -302,12 +304,12 @@ const ProductCard = ({ product }) => {
               product.price_medium // Fallback to medium if selectedSize is not recognized
             }
           </span>
-          <div className="flex space-x-2">
+          <div className="flex gap-1">
               {['Small', 'Medium', 'Large'].map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-3 py-1 border rounded-md text-sm font-medium transition-all duration-200
+                  className={`px-2 py-0.5 border rounded-md text-xs font-medium transition-all duration-200
                     ${selectedSize === size
                       ? 'bg-primary text-primary-foreground border-primary shadow-sm'
                       : 'bg-background text-muted-foreground border-border hover:bg-muted'}
@@ -319,21 +321,21 @@ const ProductCard = ({ product }) => {
             </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <button
             onClick={handleViewDetails}
-            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white"
+            className="flex-1 flex items-center justify-center gap-1 px-2 py-1 sm:px-3 sm:py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white"
           >
-            <Eye className="w-4 h-4" />
-            <span className="text-sm">View Details</span>
+            <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="text-xs sm:text-sm">View</span>
           </button>
           <button
             onClick={handleAddToCart}
             disabled={!product.in_stock}
-            className="flex-1 flex items-center justify-center gap-2 btn-coffee px-3 py-2 rounded-lg disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-1 btn-coffee px-2 py-1 sm:px-3 sm:py-2 rounded-lg disabled:opacity-50"
           >
-            <ShoppingCart className="w-4 h-4" />
-            <span className="text-sm">Add to Cart</span>
+            <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="text-xs sm:text-sm">Add</span>
           </button>
         </div>
       </div>

@@ -116,7 +116,7 @@ const Offers = () => {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3">
               {sortedOfferProducts.map((product) => (
                 <OfferCard key={product.id} product={product} />
               ))}
@@ -156,12 +156,12 @@ const OfferCard = ({ product }) => {
   return (
     <div className="group relative bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300">
       {/* Discount Badge */}
-      <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+      <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-bold z-10">
         {discountPercentage}% OFF
       </div>
 
       {/* Savings Badge */}
-      <div className="absolute top-3 right-3 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium z-10">
+      <div className="absolute top-2 right-2 bg-green-500 text-white px-1.5 py-0.5 rounded-full text-xs font-medium z-10">
         Save ${savings.toFixed(2)}
       </div>
 
@@ -176,27 +176,31 @@ const OfferCard = ({ product }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <h3 className="font-semibold text-xl mb-2 group-hover:text-primary transition-colors">
+        <div className="p-2 sm:p-3 md:p-4">
+          <h3 className="font-semibold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors truncate">
             {product.name}
           </h3>
-          <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2">
             {product.description}
           </p>
           
           {/* Category */}
-          <span className="inline-block bg-muted text-muted-foreground px-2 py-1 rounded-full text-xs mb-4">
-            {product.category}
-          </span>
+          <div className="flex flex-wrap gap-1 mb-1 sm:mb-2">
+            {product.category && (
+              <span className="inline-block bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full text-xs">
+                {product.category}
+              </span>
+            )}
+          </div>
 
           {/* Rating */}
           {product.rating && (
-            <div className="flex items-center gap-1 mb-4">
+            <div className="flex items-center gap-1 mb-1 sm:mb-2">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-4 h-4 ${
+                    className={`w-3 h-3 sm:w-4 sm:h-4 ${
                       i < Math.floor(product.rating)
                         ? 'text-yellow-400 fill-current'
                         : 'text-gray-300'
@@ -204,48 +208,39 @@ const OfferCard = ({ product }) => {
                   />
                 ))}
               </div>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs sm:text-sm text-muted-foreground">
                 ({product.reviews || 0})
               </span>
             </div>
           )}
 
           {/* Price */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-primary">
+          <div className="flex items-center justify-between mb-1 sm:mb-2">
+            <div className="flex items-center gap-1">
+              <span className="text-sm sm:text-base md:text-lg font-bold text-primary">
                 ${product.price}
               </span>
               {product.original_price && (
-                <span className="text-lg text-muted-foreground line-through">
+                <span className="text-xs sm:text-sm text-muted-foreground line-through">
                   ${product.original_price}
                 </span>
               )}
             </div>
             <div className="text-right">
-              <div className="text-sm text-green-600 font-medium">
-                You save ${savings.toFixed(2)}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {discountPercentage}% off
+              <div className="text-xs text-green-600 font-medium">
+                Save ${savings.toFixed(2)}
               </div>
             </div>
           </div>
 
-          {/* Stock status */}
-          <div className="mt-4">
-            {product.in_stock ? (
-              <span className="text-green-600 text-sm font-medium">✓ In Stock</span>
-            ) : (
-              <span className="text-red-600 text-sm font-medium">✗ Out of Stock</span>
-            )}
-          </div>
-
-          {/* Urgency indicator */}
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <div className="flex items-center space-x-2 text-red-700">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm font-medium">Limited time offer!</span>
+          {/* Stock status and Urgency indicator combined */}
+          <div className="flex items-center justify-between text-xs">
+            <span className={product.in_stock ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+              {product.in_stock ? "✓ In Stock" : "✗ Out of Stock"}
+            </span>
+            <div className="flex items-center gap-1 text-red-700">
+              <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="font-medium">Limited offer!</span>
             </div>
           </div>
         </div>

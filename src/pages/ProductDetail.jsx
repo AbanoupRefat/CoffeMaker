@@ -219,9 +219,9 @@ const ProductDetail = () => {
         </div>
 
         {/* Related Products */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-8">You Might Also Like</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-8 sm:mt-12 md:mt-16">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 md:mb-8">You Might Also Like</h2>
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
             {products
               .filter(p => p.id !== product.id)
               .slice(0, 4)
@@ -250,16 +250,16 @@ const RelatedProductCard = ({ product }) => {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+      <div className="p-2 sm:p-3 md:p-4">
+        <h3 className="font-semibold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 truncate group-hover:text-primary transition-colors">
           {product.name}
         </h3>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-primary">EGP{product.price}</span>
+          <span className="text-sm sm:text-base md:text-xl font-bold text-primary">EGP{product.price}</span>
           {product.rating && (
             <div className="flex items-center">
-              <Star className="w-4 h-4 text-yellow-400 fill-current" />
-              <span className="text-sm text-muted-foreground ml-1">
+              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+              <span className="text-xs sm:text-sm text-muted-foreground ml-1">
                 {product.rating}
               </span>
             </div>
