@@ -323,8 +323,14 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 coffee-gradient rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">C</span>
+                <div className="w-10 h-10 coffee-gradient rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
+                    <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                    <line x1="6" y1="2" x2="6" y2="4" />
+                    <line x1="10" y1="2" x2="10" y2="4" />
+                    <line x1="14" y1="2" x2="14" y2="4" />
+                  </svg>
                 </div>
                 <span className="text-xl font-bold coffee-text-gradient">CoffeeMaker</span>
               </div>
@@ -332,9 +338,10 @@ const Home = () => {
                 Premium coffee beans sourced from the world's finest farms, roasted to perfection for your daily ritual.
               </p>
               <div className="flex space-x-4">
-                <a href="https://www.facebook.com/coffeecraft/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook className="w-6 h-6" /></a>
-                <a href="https://www.instagram.com/coffeecraft/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram className="w-6 h-6" /></a>
-                <a href="https://wa.me/15551234567" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><MessageCircle className="w-6 h-6" /></a>
+                <a href="https://www.facebook.com/coffeemaker.cr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook className="w-6 h-6" /></a>
+                <a href="https://www.instagram.com/coffeemaker.cr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram className="w-6 h-6" /></a>
+                <a href="https://www.tiktok.com/@coffeemakercr?_t=ZS-8zYoCB9yWXw&_r=1" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M15 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M15 8v8a4 4 0 0 1-4 4"/><line x1="15" y1="4" x2="15" y2="12"/></svg></a>
+                <a href="https://wa.me/01001246102" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><MessageCircle className="w-6 h-6" /></a>
               </div>
             </div>
             
@@ -362,8 +369,8 @@ const Home = () => {
               <ul className="space-y-2 text-muted-foreground">
                 <li><a href="https://www.google.com/maps/search/?api=1&query=123%20Coffee%20Street,%20Bean%20City,%20BC%2012345" target="_blank" rel="noopener noreferrer" className="hover:underline">123 Coffee Street</a></li>
                 <li>Bean City, BC 12345</li>
-                <li>Phone: <a href="https://wa.me/15551234567" target="_blank" rel="noopener noreferrer" className="hover:underline">(555) 123-4567</a></li>
-                <li>Email: <a href="mailto:hello@coffeecraft.com" className="hover:underline">hello@coffeecraft.com</a></li>
+                <li>WhatsApp: <a href="https://wa.me/01001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></li>
+                <li>Email: <a href="mailto:hello@coffeemaker.cr" className="hover:underline">hello@coffeemaker.cr</a></li>
               </ul>
             </div>
           </div>
