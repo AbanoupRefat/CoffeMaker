@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Star, ArrowRight, Coffee, Truck, Shield, Heart, Instagram, Facebook, MessageCircle, Loader2, ShoppingCart } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
-import { products as staticProducts, testimonials } from '../data/products';
+
 import { useCart, useToast } from '../App';
 
 const Home = () => {
