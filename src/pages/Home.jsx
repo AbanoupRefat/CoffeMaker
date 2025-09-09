@@ -258,64 +258,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 coffee-gradient">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Stay Updated with Coffee News
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Get the latest updates on new arrivals, special offers, and brewing tips.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
-            />
-            <button className="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </section>
 
-      {/* Social Media */}
-      <section className="py-16 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Follow Our Journey</h2>
-            <p className="text-xl text-muted-foreground">Stay connected for the latest updates and coffee inspiration</p>
-          </div>
-
-          <div className="flex justify-center space-x-6">
-            <a
-              href="https://www.facebook.com/coffeecraft/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 coffee-gradient rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform"
-            >
-              <Facebook className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.instagram.com/coffeecraft/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 coffee-gradient rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform"
-            >
-              <Instagram className="w-6 h-6" />
-            </a>
-            <a
-              href="https://wa.me/15551234567"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 coffee-gradient rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform"
-            >
-              <MessageCircle className="w-6 h-6" />
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="bg-card border-t border-border py-12">
@@ -398,7 +341,7 @@ const ProductCard = ({ product }) => {
   };
   
   return (
-    <div className="group bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300">
+    <div className="group bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300 w-full md:w-auto">
       <Link to={`/products/${product.id}`}>
         <div className="aspect-square overflow-hidden rounded-t-lg">
           <img
@@ -432,8 +375,8 @@ const ProductCard = ({ product }) => {
               </div>
             )}
           </div>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2 sm:gap-0">
+            <div className="flex gap-2 w-full sm:w-auto justify-center">
               {['Small', 'Medium', 'Large'].map((size) => (
                 <button
                   key={size}
@@ -452,7 +395,7 @@ const ProductCard = ({ product }) => {
           <button
             onClick={handleAddToCart}
             disabled={!product.in_stock && !product.inStock}
-            className="w-full flex items-center justify-center gap-2 btn-coffee px-3 py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 btn-coffee px-3 py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed mt-2 sm:mt-0"
           >
             <ShoppingCart className="w-4 h-4" />
             <span>Add to Cart</span>
