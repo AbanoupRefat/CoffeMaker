@@ -310,7 +310,7 @@ const Home = () => {
             <div>
               <h3 className="font-semibold mb-4">Contact Info</h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="https://www.google.com/maps/search/?api=1&query=123%20Coffee%20Street,%20Bean%20City,%20BC%2012345" target="_blank" rel="noopener noreferrer" className="hover:underline">123 Coffee Street</a></li>
+                
                 
                 <li>WhatsApp: <a href="https://wa.me/01001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></li>
                 
