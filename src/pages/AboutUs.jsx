@@ -132,7 +132,7 @@ const AboutUs = () => {
             </a>
 
             <a
-              href="https://wa.me/01001246102"
+              href="https://wa.me/+201001246102"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
