@@ -24,7 +24,7 @@ const Support = () => {
                 <Phone className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">WhatsApp Support</h3>
-              <p className="text-muted-foreground mb-2"><a href="https://wa.me/+201001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></p>
+              <p className="text-muted-foreground mb-2"><a href="https://wa.me/+201001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+201001246102</a></p>
               <p className="text-sm text-muted-foreground">Available 24/7</p>
             </div>
             
