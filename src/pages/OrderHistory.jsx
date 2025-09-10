@@ -1,4 +1,5 @@
 import { Loader2 } from "lucide-react";
+import { Link } from 'react-router-dom';
 import { useOrders } from "../hooks/useOrders";
 
 const OrderHistory = () => {
@@ -17,9 +18,9 @@ const OrderHistory = () => {
           ) : orders.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-muted-foreground mb-4">No orders found.</p>
-              <a href="/products" className="btn-coffee px-6 py-2 rounded-lg">
+              <Link to="/products" className="btn-coffee px-6 py-2 rounded-lg">
                 Start Shopping
-              </a>
+              </Link>
             </div>
           ) : (
             <div className="space-y-4">
@@ -67,4 +68,4 @@ const OrderHistory = () => {
   );
 };
 
-export default OrderHistory; 
+export default OrderHistory;
