@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Star, ArrowRight, Coffee, Truck, Shield, Heart, Instagram, Facebook, MessageCircle, Loader2, ShoppingCart } from 'lucide-react';
+import { Star, ArrowRight, Coffee, Truck, Shield, Heart, Instagram, Facebook, MessageCircle, Loader2, ShoppingCart, Eye } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { products as staticProducts, testimonials } from '../data/products';
 import { useCart, useToast } from '../App';
@@ -105,7 +105,7 @@ const Home = () => {
               <p className="text-red-500">Error loading products: {error}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {availableProducts.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -135,7 +135,7 @@ const Home = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
               {offerProducts.map((product) => (
                 <div key={product.id} className="bg-card rounded-lg shadow-sm border border-border overflow-hidden card-hover relative">
                   {(product.originalPrice || product.original_price) && (
@@ -152,21 +152,21 @@ const Home = () => {
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <div className="p-3 sm:p-4 md:p-6">
-                    <h3 className="text-sm sm:text-base md:text-lg font-semibold mb-1 sm:mb-2 truncate">{product.name}</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2">{product.description}</p>
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-semibold mb-2 truncate">{product.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{product.description}</p>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-1 sm:space-x-2">
-                        <span className="text-sm sm:text-base md:text-lg font-bold text-red-600">${product.price}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg font-bold text-red-600">${product.price}</span>
                         {(product.originalPrice || product.original_price) && (
-                          <span className="text-xs sm:text-sm text-muted-foreground line-through">
+                          <span className="text-sm text-muted-foreground line-through">
                             ${product.originalPrice || product.original_price}
                           </span>
                         )}
                       </div>
                       <Link
                         to={`/products/${product.id}`}
-                        className="btn-coffee px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-lg text-xs sm:text-sm font-medium"
+                        className="btn-coffee px-4 py-2 rounded-lg text-sm font-medium"
                       >
                         Shop Now
                       </Link>
@@ -258,8 +258,6 @@ const Home = () => {
         </div>
       </section>
 
-
-
       {/* Footer */}
       <footer className="bg-card border-t border-border py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -310,10 +308,7 @@ const Home = () => {
             <div>
               <h3 className="font-semibold mb-4">Contact Info</h3>
               <ul className="space-y-2 text-muted-foreground">
-                
-                
                 <li>WhatsApp: <a href="https://wa.me/01001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></li>
-                
               </ul>
             </div>
           </div>
@@ -335,29 +330,38 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = (e) => {
     e.preventDefault(); // Prevent navigation to product detail
+    e.stopPropagation(); // Stop event bubbling
     const priceKey = `price_${selectedSize.toLowerCase()}`;
     const selectedPrice = product[priceKey] || product.price;
     addToCart(product, selectedSize, 1, selectedPrice);
   };
+
+  const handleSizeChange = (size, e) => {
+    e.preventDefault();
+    e.stopPropagation(); // Stop event bubbling to prevent navigation
+    setSelectedSize(size);
+  };
   
   return (
-    <div className="group bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300 w-full md:w-auto">
-      <Link to={`/products/${product.id}`}>
-        <div className="aspect-square overflow-hidden rounded-t-lg">
+    <div className="group bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300 overflow-hidden">
+      <Link to={`/products/${product.id}`} className="block">
+        <div className="aspect-square overflow-hidden">
           <img
             src={product.image_url || product.image || '/placeholder-coffee.jpg'}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-        <div className="p-2 sm:p-3 md:p-4">
-          <h3 className="font-semibold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors truncate">
+        <div className="p-2 sm:p-3 md:p-4 space-y-2">
+          <h3 className="font-semibold text-sm sm:text-base md:text-lg group-hover:text-primary transition-colors line-clamp-2">
             {product.name}
           </h3>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2">
+          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
             {product.description}
           </p>
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
+          
+          {/* Price and Rating */}
+          <div className="flex items-center justify-between">
             <span className="text-sm sm:text-base md:text-lg font-bold text-primary">
               EGP{
                 selectedSize === 'Small' ? product.price_small :
@@ -375,29 +379,31 @@ const ProductCard = ({ product }) => {
               </div>
             )}
           </div>
-          <div className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
-            <div className="flex gap-1 w-full justify-start">
-              {['Small', 'Medium', 'Large'].map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`px-2 py-0.5 border rounded-md text-xs font-medium transition-all duration-200
-                    ${selectedSize === size
-                      ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                      : 'bg-background text-muted-foreground border-border hover:bg-muted'}
-                  `}
-                >
-                  {size.charAt(0)}
-                </button>
-              ))}
-            </div>
+          
+          {/* Size Selection - Prevent navigation */}
+          <div className="flex items-center justify-center gap-1">
+            {['Small', 'Medium', 'Large'].map((size) => (
+              <button
+                key={size}
+                onClick={(e) => handleSizeChange(size, e)}
+                className={`flex-1 px-2 py-1 border rounded-md text-xs font-medium transition-all duration-200
+                  ${selectedSize === size
+                    ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                    : 'bg-background text-muted-foreground border-border hover:bg-muted'}
+                `}
+              >
+                {size}
+              </button>
+            ))}
           </div>
+          
+          {/* Add to Cart Button - Prevent navigation */}
           <button
             onClick={handleAddToCart}
             disabled={!product.in_stock && !product.inStock}
-            className="w-full flex items-center justify-center gap-1 btn-coffee px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 btn-coffee px-3 py-2 rounded-lg disabled:opacity-50 text-sm font-medium"
           >
-            <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
+            <ShoppingCart className="w-4 h-4" />
             <span>Add to Cart</span>
           </button>
         </div>
