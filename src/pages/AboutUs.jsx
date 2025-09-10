@@ -132,7 +132,7 @@ const AboutUs = () => {
             </a>
 
             <a
-              href="https://wa.me/01001246102"
+              href="https://wa.me/+201001246102"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
@@ -141,7 +141,7 @@ const AboutUs = () => {
                 <Phone className="w-8 h-8 text-white" />
               </div>
               <span className="font-semibold text-gray-800">WhatsApp</span>
-              <span className="text-sm text-gray-500 mt-1">+01001246102</span>
+              <span className="text-sm text-gray-500 mt-1">+201001246102</span>
             </a>
 
             <a
