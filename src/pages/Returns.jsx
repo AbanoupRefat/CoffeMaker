@@ -155,7 +155,7 @@ const Returns = () => {
                 Email Return Request
               </a>
               <a
-                href="https://wa.me/15551234567?text=Hi, I need help with a return"
+                href="https://wa.me/201001246102?text=Hi, I need help with a return"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-semibold hover:bg-secondary/80 transition-colors"
