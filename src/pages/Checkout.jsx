@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart, useToast } from '../App';
 import { useAuth } from '../contexts/AuthContext';
-import { CreditCard, Truck, Shield, ArrowLeft, DollarSign } from 'lucide-react';
+import { CreditCard, Truck, Shield, ArrowLeft, DollarSign, Tag } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useProfile } from '../hooks/useProfile';
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { cartItems, getCartTotal, clearCart } = useCart();
+  const { cartItems, getCartTotal, clearCart, promocode, getDiscountAmount } = useCart();
   const { user } = useAuth();
   const { profile } = useProfile();
   const { showToast } = useToast();
@@ -25,7 +25,7 @@ const Checkout = () => {
   });
 
   const [governorates, setGovernorates] = useState([]);
-  const [shippingFee, setShippingFee] = useState(60); // Default shipping fee
+  const [shippingFee, setShippingFee] = useState(null); // No default shipping fee until governorate is selected
 
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
@@ -120,6 +120,16 @@ const Checkout = () => {
         orderNotes: formData.orderNotes
       };
       
+      // Check if governorate is selected
+      if (shippingFee === null) {
+        showToast('Please select a governorate first', 'error');
+        setFormErrors(prev => ({ ...prev, governorate: 'Please select a governorate' }));
+        setLoading(false);
+        return;
+      }
+      
+      const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+      const discountAmount = getDiscountAmount();
       const total = getCartTotal();
       const shipping = shippingFee;
       const grandTotal = total + shipping;
@@ -130,7 +140,10 @@ const Checkout = () => {
         .insert([
           {
             user_id: user?.id || null, // Allow guest checkout
-            subtotal: total,
+            subtotal: subtotal,
+            discount_amount: discountAmount,
+            discount_percentage: promocode?.discount_type === 'percentage' ? promocode.discount_value : 0,
+            promocode_id: promocode?.id || null,
             shipping_fee: shipping,
             total_price: grandTotal,
             status: 'pending',
@@ -353,10 +366,10 @@ const Checkout = () => {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || shippingFee === null}
                 className="w-full btn-coffee py-3 rounded-lg font-medium disabled:opacity-50"
               >
-                {loading ? 'Processing...' : `Place Order - ${grandTotal.toFixed(2)}`}
+                {loading ? 'Processing...' : shippingFee === null ? 'Select Governorate First' : `Place Order - EGP${(getCartTotal() + shippingFee).toFixed(2)}`}
               </button>
             </form>
             </div>
@@ -384,16 +397,31 @@ const Checkout = () => {
               <div className="border-t pt-4 space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>EGP{total.toFixed(2)}</span>
+                  <span>EGP{cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}</span>
                 </div>
+                
+                {promocode && (
+                  <div className="flex justify-between text-primary">
+                    <span className="flex items-center">
+                      <Tag className="w-4 h-4 mr-1" />
+                      Discount ({promocode.code})
+                    </span>
+                    <span>-EGP{getDiscountAmount().toFixed(2)}</span>
+                  </div>
+                )}
+                
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>EGP{shipping.toFixed(2)}</span>
+                  {shippingFee !== null ? (
+                    <span>EGP{shippingFee.toFixed(2)}</span>
+                  ) : (
+                    <span className="text-amber-600">Please select governorate</span>
+                  )}
                 </div>
 
                 <div className="flex justify-between font-semibold text-lg">
-                    <span>Total</span>
-                  <span>EGP{grandTotal.toFixed(2)}</span>
+                  <span>Total</span>
+                  <span>EGP{(getCartTotal() + (shippingFee || 0)).toFixed(2)}</span>
                 </div>
               </div>
 

@@ -153,14 +153,24 @@ const OrderSuccess = () => {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Tracking information will be</p>
-              <p className="text-sm text-muted-foreground">sent to your email</p>
+              <p className="text-sm text-muted-foreground">
+                <Link to="/orders" className="text-primary hover:underline">
+                  Track your order in order history
+                </Link>
+              </p>
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+          <Link
+            to="/orders"
+            className="btn-coffee px-8 py-3 rounded-lg font-semibold inline-flex items-center justify-center space-x-2"
+          >
+            <span>View Order History</span>
+            <ArrowRight className="w-5 h-5" />
+          </Link>
           <Link
             to="/products"
             className="btn-coffee px-8 py-3 rounded-lg font-semibold inline-flex items-center justify-center space-x-2"
@@ -176,40 +186,7 @@ const OrderSuccess = () => {
           </button>
         </div>
 
-        {/* Contact Support */}
-        <div className="text-center mt-12 pt-8 border-t border-border">
-          <h3 className="font-semibold mb-2">Need Help?</h3>
-          <p className="text-muted-foreground mb-4">
-            If you have any questions about your order, feel free to contact us.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center text-sm">
-            <a href="mailto:support@coffeecraft.com" className="text-primary hover:underline">
-              📧 support@coffeecraft.com
-            </a>
-            <a href="tel:+15551234567" className="text-primary hover:underline">
-              📞 (555) 123-4567
-            </a>
-          </div>
-        </div>
 
-        {/* Newsletter Signup */}
-        <div className="mt-12 bg-muted/30 rounded-lg p-8 text-center">
-          <h3 className="text-xl font-semibold mb-4">Stay Updated</h3>
-          <p className="text-muted-foreground mb-6">
-            Get notified about new coffee arrivals, special offers, and brewing tips.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              defaultValue={customerInfo.email}
-              className="flex-1 px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-            />
-            <button className="btn-coffee px-6 py-3 rounded-lg font-semibold">
-              Subscribe
-            </button>
-          </div>
-        </div>
       </div>
 
 

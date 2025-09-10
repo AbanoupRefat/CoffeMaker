@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Minus, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react';
+import { Plus, Minus, Trash2, ShoppingBag, ArrowLeft, Tag, X } from 'lucide-react';
 import { useCart } from '../App';
 
 const Cart = () => {
-  const { cartItems, updateCartQuantity, removeFromCart, getCartTotal } = useCart();
+  const { cartItems, updateCartQuantity, removeFromCart, getCartTotal, promocode, applyPromocode, removePromocode, getDiscountAmount } = useCart();
+  const [promoInput, setPromoInput] = useState('');
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
 
   const handleQuantityChange = (productId, size, newQuantity) => {
     updateCartQuantity(productId, size, newQuantity);
@@ -148,14 +151,78 @@ const Cart = () => {
               <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 md:mb-6">Order Summary</h2>
               
               <div className="space-y-2 sm:space-y-3 md:space-y-4 mb-3 sm:mb-4 md:mb-6">
+                {/* Promocode Input */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2">Promocode</label>
+                  {promocode ? (
+                    <div className="flex items-center justify-between bg-muted p-2 rounded-lg">
+                      <div className="flex items-center">
+                        <Tag className="w-4 h-4 mr-2 text-primary" />
+                        <span className="text-sm font-medium">{promocode.code}</span>
+                        {promocode.discount_type === 'percentage' ? (
+                          <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
+                            {promocode.discount_value}% OFF
+                          </span>
+                        ) : (
+                          <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
+                            EGP{promocode.discount_value} OFF
+                          </span>
+                        )}
+                      </div>
+                      <button 
+                        onClick={removePromocode}
+                        className="text-muted-foreground hover:text-destructive"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex">
+                      <input
+                        type="text"
+                        value={promoInput}
+                        onChange={(e) => setPromoInput(e.target.value)}
+                        placeholder="Enter promocode"
+                        className="flex-1 px-3 py-2 border border-border rounded-l-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                      <button
+                        onClick={async () => {
+                          if (!promoInput.trim()) return;
+                          setIsApplyingPromo(true);
+                          await applyPromocode(promoInput.trim());
+                          setIsApplyingPromo(false);
+                        }}
+                        disabled={isApplyingPromo || !promoInput.trim()}
+                        className="px-4 py-2 bg-primary text-white rounded-r-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isApplyingPromo ? 'Applying...' : 'Apply'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+                
                 <div className="flex justify-between">
                   <span className="text-xs sm:text-sm text-muted-foreground">Subtotal</span>
-                  <span className="text-sm sm:text-base">EGP{getCartTotal().toFixed(2)}</span>
+                  <span className="text-sm sm:text-base">
+                    EGP{cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
+                  </span>
                 </div>
+                
+                {promocode && (
+                  <div className="flex justify-between text-primary">
+                    <span className="text-xs sm:text-sm flex items-center">
+                      <Tag className="w-3 h-3 mr-1" />
+                      Discount ({promocode.code})
+                    </span>
+                    <span className="text-sm sm:text-base">-EGP{getDiscountAmount().toFixed(2)}</span>
+                  </div>
+                )}
+                
                 <div className="flex justify-between">
                   <span className="text-xs sm:text-sm text-muted-foreground">Shipping</span>
                   <span className="text-amber-600 text-xs sm:text-sm italic">Added at checkout</span>
                 </div>
+                
                 <div className="border-t border-border pt-2 sm:pt-3 md:pt-4">
                   <div className="flex justify-between text-base sm:text-lg font-semibold">
                     <span>Subtotal</span>

@@ -75,14 +75,8 @@ const Navbar = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 coffee-gradient rounded-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
-                  <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-                  <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
-                  <line x1="6" y1="2" x2="6" y2="4" />
-                  <line x1="10" y1="2" x2="10" y2="4" />
-                  <line x1="14" y1="2" x2="14" y2="4" />
-                </svg>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
+                <img src="https://scontent.faly8-2.fna.fbcdn.net/v/t39.30808-6/472560073_122126366918632004_6920547193601916595_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=XgL0aGRO24cQ7kNvwGp_G9g&_nc_oc=Adnl-5y0OSZbEPOlXPZeOlWwMqCw5UflyleiU7efz2qR6qz2yv0b6sBPlfZ4acnhi4Q&_nc_zt=23&_nc_ht=scontent.faly8-2.fna&_nc_gid=n7rNb2Rh6Bj_xACOQt7OLg&oh=00_AfbeVLmeQF62moEkTCFHOSKgzImNIPwMURQ5ABFZDBAjEQ&oe=68C79A61" alt="CoffeeMaker Logo" className="w-full h-full object-cover" />
               </div>
               <span className="text-xl font-bold text-primary">CoffeeMaker</span>
             </Link>

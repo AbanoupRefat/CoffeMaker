@@ -1,5 +1,6 @@
-import { Loader2 } from "lucide-react";
+
 import { Link } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import { useOrders } from "../hooks/useOrders";
 
 const OrderHistory = () => {
@@ -31,7 +32,8 @@ const OrderHistory = () => {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold">
-                      Order #{order.id.slice(0, 8)}
+                      Order #<span className="font-mono text-sm"> {order.id.slice(0, 8)}</span>
+                      <p className="text-xs text-muted-foreground">For mobile tracking: {order.id.slice(0, 8)}</p>
                     </h3>
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -45,19 +47,36 @@ const OrderHistory = () => {
                       {order.status}
                     </span>
                   </div>
+                  {order.order_items && order.order_items.length > 0 && (
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Items: {order.order_items[0].product_name}
+                      {order.order_items.length > 1 && ` and ${order.order_items.length - 1} more`}
+                    </p>
+                  )}
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>
                       {new Date(order.created_at).toLocaleDateString()}
                     </span>
                     <span className="font-medium text-primary">
-                      ${order.total_price}
+                      EGP{order.total_price}
                     </span>
                   </div>
-                  {order.order_items && order.order_items.length > 0 && (
-                    <div className="mt-2 text-sm text-muted-foreground">
-                      {order.order_items.length} item(s)
-                    </div>
-                  )}
+                  <div className="text-sm text-muted-foreground">
+                    <p>Total: EGP{order.total_price}</p>
+                    <p>Items: {order.order_items ? order.order_items.length : 0}</p>
+                    <p>Status: {order.status}</p>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <h4 className="font-semibold mb-2">Order Items:</h4>
+                    <ul className="space-y-2">
+                      {order.order_items && order.order_items.map(item => (
+                        <li key={item.id} className="flex justify-between text-sm text-muted-foreground">
+                          <span>{item.product_name} (x{item.quantity})</span>
+                          <span>EGP{(item.price * item.quantity).toFixed(2)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               ))}
             </div>

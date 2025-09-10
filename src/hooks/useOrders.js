@@ -51,13 +51,35 @@ export const useOrders = () => {
     try {
       const { data, error } = await supabase
         .from('orders')
-        .insert([{
-          ...orderData,
-          user_id: user.id
-        }])
+        .insert([
+          {
+            ...orderData,
+            user_id: user.id
+          }
+        ])
         .select();
 
       if (error) throw error;
+
+      // Decrement promocode usage if used
+      if (orderData.promocode_id) {
+        const { data: promocode, error: promocodeError } = await supabase
+          .from('promocodes')
+          .select('usage_limit, used_count')
+          .eq('id', orderData.promocode_id)
+          .single();
+
+        if (promocodeError) throw promocodeError;
+
+        if (promocode && (promocode.usage_limit === null || promocode.used_count < promocode.usage_limit)) {
+          const { error: updateError } = await supabase
+            .from('promocodes')
+            .update({ used_count: promocode.used_count + 1 })
+            .eq('id', orderData.promocode_id);
+
+          if (updateError) console.error('Error updating promocode usage:', updateError);
+        }
+      }
       
       // Fetch the complete order with items
       await fetchOrders();

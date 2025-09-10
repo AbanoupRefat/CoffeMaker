@@ -1,6 +1,7 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, createContext, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import { supabase } from './lib/supabase';
 
 // Import components
 import Navbar from './components/Navbar';
@@ -33,8 +34,30 @@ export const useAuth = () => useContext(AuthContext);
 export const useToast = () => useContext(ToastContext);
 
 function App() {
-  // Cart state
-  const [cartItems, setCartItems] = useState([]);
+  // Cart state with localStorage persistence
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCart = localStorage.getItem('cartItems');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+  
+  const [promocode, setPromocode] = useState(() => {
+    const savedPromocode = localStorage.getItem('promocode');
+    return savedPromocode ? JSON.parse(savedPromocode) : null;
+  });
+  
+  // Save cart items to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+  
+  // Save promocode to localStorage whenever it changes
+  useEffect(() => {
+    if (promocode) {
+      localStorage.setItem('promocode', JSON.stringify(promocode));
+    } else {
+      localStorage.removeItem('promocode');
+    }
+  }, [promocode]);
   
   // Auth state
   const [user, setUser] = useState(null);
@@ -89,14 +112,98 @@ function App() {
 
   const clearCart = () => {
     setCartItems([]);
+    setPromocode(null);
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('promocode');
   };
 
   const getCartTotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    
+    if (!promocode) return subtotal;
+    
+    if (promocode.discount_type === 'percentage') {
+      const discountAmount = subtotal * (promocode.discount_value / 100);
+      // Apply max discount cap if exists
+      if (promocode.max_discount_amount && discountAmount > promocode.max_discount_amount) {
+        return subtotal - promocode.max_discount_amount;
+      }
+      return subtotal - discountAmount;
+    } else { // fixed amount
+      return Math.max(0, subtotal - promocode.discount_value);
+    }
+  };
+  
+  const getDiscountAmount = () => {
+    if (!promocode) return 0;
+    
+    const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    
+    if (promocode.discount_type === 'percentage') {
+      const discountAmount = subtotal * (promocode.discount_value / 100);
+      // Apply max discount cap if exists
+      if (promocode.max_discount_amount && discountAmount > promocode.max_discount_amount) {
+        return promocode.max_discount_amount;
+      }
+      return discountAmount;
+    } else { // fixed amount
+      return Math.min(subtotal, promocode.discount_value);
+    }
   };
 
   const getCartItemCount = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+  
+  // Promocode functions
+  const applyPromocode = async (code) => {
+    try {
+      // Check if code exists and is valid
+      const { data, error } = await supabase
+        .from('promocodes')
+        .select('*')
+        .eq('code', code)
+        .eq('is_active', true)
+        .single();
+      
+      if (error) throw error;
+      
+      if (!data) {
+        showToast('Invalid promocode', 'error');
+        return false;
+      }
+      
+      // Check if promocode is expired
+      if (data.valid_until && new Date(data.valid_until) < new Date()) {
+        showToast('This promocode has expired', 'error');
+        return false;
+      }
+      
+      // Check if usage limit is reached
+      if (data.usage_limit && data.used_count >= data.usage_limit) {
+        showToast('This promocode has reached its usage limit', 'error');
+        return false;
+      }
+      
+      // Check minimum order amount
+      const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+      if (data.min_order_amount > 0 && subtotal < data.min_order_amount) {
+        showToast(`This promocode requires a minimum order of EGP${data.min_order_amount}`, 'error');
+        return false;
+      }
+      
+      setPromocode(data);
+      showToast(`Promocode ${code} applied successfully!`, 'success');
+      return true;
+    } catch (error) {
+      showToast('Error applying promocode', 'error');
+      return false;
+    }
+  };
+  
+  const removePromocode = () => {
+    setPromocode(null);
+    showToast('Promocode removed', 'info');
   };
 
   // Auth functions
@@ -160,7 +267,11 @@ function App() {
         updateCartQuantity,
         clearCart,
         getCartTotal,
-        getCartItemCount
+        getCartItemCount,
+        promocode,
+        applyPromocode,
+        removePromocode,
+        getDiscountAmount
       }}>
         <ToastContext.Provider value={{ showToast, removeToast }}>
           <Router>
