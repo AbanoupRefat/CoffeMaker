@@ -141,7 +141,7 @@ const AboutUs = () => {
                 <Phone className="w-8 h-8 text-white" />
               </div>
               <span className="font-semibold text-gray-800">WhatsApp</span>
-              <span className="text-sm text-gray-500 mt-1">+01001246102</span>
+              <span className="text-sm text-gray-500 mt-1">+201001246102</span>
             </a>
 
             <a
