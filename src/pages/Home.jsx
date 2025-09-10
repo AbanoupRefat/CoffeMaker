@@ -282,7 +282,7 @@ const Home = () => {
                 <a href="https://www.facebook.com/coffeemaker.cr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook className="w-6 h-6" /></a>
                 <a href="https://www.instagram.com/coffeemaker.cr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram className="w-6 h-6" /></a>
                 <a href="https://www.tiktok.com/@coffeemakercr?_t=ZS-8zYoCB9yWXw&_r=1" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M15 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M15 8v8a4 4 0 0 1-4 4"/><line x1="15" y1="4" x2="15" y2="12"/></svg></a>
-                <a href="https://wa.me/01001246102" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><MessageCircle className="w-6 h-6" /></a>
+                <a href="https://wa.me/+201001246102" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><MessageCircle className="w-6 h-6" /></a>
               </div>
             </div>
             
@@ -308,7 +308,7 @@ const Home = () => {
             <div>
               <h3 className="font-semibold mb-4">Contact Info</h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li>WhatsApp: <a href="https://wa.me/01001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></li>
+                <li>WhatsApp: <a href="https://wa.me/+201001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></li>
               </ul>
             </div>
           </div>
