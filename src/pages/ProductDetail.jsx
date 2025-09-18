@@ -28,11 +28,11 @@ const ProductDetail = () => {
     if (!product) return;
     
     let selectedSizePrice = product.price;
-    if (selectedSize === 'Small') {
+    if (selectedSize === '50g') {
       selectedSizePrice = product.price_small;
-    } else if (selectedSize === 'Medium') {
+    } else if (selectedSize === '100g') {
       selectedSizePrice = product.price_medium;
-    } else if (selectedSize === 'Large') {
+    } else if (selectedSize === '200g') {
       selectedSizePrice = product.price_large;
     }
     addToCart(product, selectedSize, quantity, selectedSizePrice);
@@ -121,9 +121,9 @@ const ProductDetail = () => {
             {/* Price */}
             <div className="text-3xl font-bold text-primary">
               EGP{
-                selectedSize === 'Small' ? product.price_small.toFixed(2) :
-                selectedSize === 'Medium' ? product.price_medium.toFixed(2) :
-                selectedSize === 'Large' ? product.price_large.toFixed(2) :
+                selectedSize === '50g' ? product.price_small.toFixed(2) :
+                selectedSize === '100g' ? product.price_medium.toFixed(2) :
+                selectedSize === '200g' ? product.price_large.toFixed(2) :
                 product.price.toFixed(2)
               }
             </div>
@@ -132,7 +132,7 @@ const ProductDetail = () => {
             <div>
               <h3 className="text-lg font-semibold mb-3">Size</h3>
               <div className="flex space-x-3">
-                {['Small', 'Medium', 'Large'].map((size) => (
+                {['50g', '100g', '200g'].map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
