@@ -264,16 +264,7 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-10 h-10 coffee-gradient rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
-                    <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-                    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
-                    <line x1="6" y1="2" x2="6" y2="4" />
-                    <line x1="10" y1="2" x2="10" y2="4" />
-                    <line x1="14" y1="2" x2="14" y2="4" />
-                  </svg>
-                </div>
-                <span className="text-xl font-bold coffee-text-gradient">CoffeeMaker</span>
+                <span className="text-xl font-bold coffee-text-gradient">About Us</span>
               </div>
               <p className="text-muted-foreground mb-4">
                 Premium coffee beans sourced from the world's finest farms, roasted to perfection for your daily ritual.
@@ -291,7 +282,7 @@ const Home = () => {
               <ul className="space-y-2">
                 <li><Link to="/products" className="text-muted-foreground hover:text-primary transition-colors">Products</Link></li>
                 <li><Link to="/offers" className="text-muted-foreground hover:text-primary transition-colors">Offers</Link></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">About Us</a></li>
+                <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
               </ul>
             </div>
             
@@ -305,12 +296,7 @@ const Home = () => {
               </ul>
             </div>
             
-            <div>
-              <h3 className="font-semibold mb-4">Contact Info</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>WhatsApp: <a href="https://wa.me/+201001246102" target="_blank" rel="noopener noreferrer" className="hover:underline">+01001246102</a></li>
-              </ul>
-            </div>
+
           </div>
           
           <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
