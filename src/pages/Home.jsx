@@ -24,17 +24,17 @@ const Home = () => {
       >
         <div className="text-center text-white max-w-4xl mx-auto px-4">
           <h1 className="text-3xl md:text-5xl font-bold mb-6 fade-in-up">
-              <p className="block text-white text-3xl md:text-5xl" dir="rtl">
-                استمتع بأول تجربة
-              </p>
-              <span className="block coffee-text-gradient text-transparent bg-clip-text text-3xl md:text-5xl" dir="rtl">
-                قهوة محمصة عالفحم في مصر
+              <span className="block text-white text-3xl md:text-5xl">
+                Coffee Maker
+              </span>
+              <span className="block coffee-text-gradient text-3xl md:text-5xl">
+                Charcoal roasted
               </span>
             </h1>
-          <p className="text-xl md:text-2xl mb-8 text-gray-200 fade-in-up">
-            Premium coffee beans sourced from the world's finest farms, 
-            roasted to perfection for your daily ritual.
-          </p>
+          <p dir="rtl" className="text-white text-xl font-bold leading-relaxed mt-4 max-w-2xl">
+              استمتع بأول تجربة
+              قهوة محمصة عالفحم في مصر
+            </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center fade-in-up">
             <Link
               to="/products"
