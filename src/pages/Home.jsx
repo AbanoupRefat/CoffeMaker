@@ -17,18 +17,20 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section 
-        className="relative h-screen flex items-center justify-center hero-bg"
+        className="relative flex items-center justify-center hero-bg min-h-[600px] py-16"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://raw.githubusercontent.com/AbanoupRefat/CoffeMaker/refs/heads/main/src/assets/prxn5iEqjUkk.jpg')`
         }}
       >
         <div className="text-center text-white max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 fade-in-up">
-            Craft Your Perfect
-            <span className="block coffee-text-gradient text-transparent bg-clip-text">
-              Coffee Experience
-            </span>
-          </h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-6 fade-in-up">
+              <p className="block text-white text-3xl md:text-5xl" dir="rtl">
+                استمتع بأول تجربة
+              </p>
+              <span className="block coffee-text-gradient text-transparent bg-clip-text text-3xl md:text-5xl" dir="rtl">
+                قهوة محمصة عالفحم في مصر
+              </span>
+            </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200 fade-in-up">
             Premium coffee beans sourced from the world's finest farms, 
             roasted to perfection for your daily ritual.

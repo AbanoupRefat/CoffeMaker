@@ -45,21 +45,9 @@ const AboutUs = () => {
             <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
               Our Story
             </h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-4">
-              CoffeeCraft was born out of a profound passion for exceptional
-              coffee and a desire to share the world's finest beans with fellow
-              enthusiasts. Our journey began in a small roastery, fueled by the
-              belief that every cup of coffee should be an experience, a moment
-              of pure enjoyment and discovery.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              We meticulously source our beans from sustainable farms across the
-              globe, partnering with growers who share our commitment to quality
-              and ethical practices. Each batch is roasted with precision,
-              unlocking unique flavors and aromas that tell the story of its
-              origin. From the vibrant acidity of Ethiopian Yirgacheffe to the
-              rich, chocolatey notes of Colombian Supremo, we invite you to
-              explore the diverse world of coffee with us.
+            <p className="text-lg text-gray-600 leading-relaxed mb-4" dir="rtl">
+              بدأت قصة صانع القهوة فى بيت الأجداد وكانت العادة الصباحية التي تجمع الاقارب والاصدقاء
+              هی تحضير القهوہ و الإهتمام بتفاصيل كل مرحلة باسلوب الأجداد الأصيل والبسيط ، وكانت جملة الجد الشهيرة هى «لو بتحبها أوى أعملها صح اوی» و تناقلت هذه العبارة عبر الزمن ونقلت معها حب القهوة بين الأبناء حتى وصلت برائحتها ومذاقها المميز والاصيل باساليب التحضير الحديثة لتكون حضارة الأجداد بين أيدينا اليوم
             </p>
           </div>
           <div>
