@@ -95,69 +95,71 @@ const Products = () => {
 
       {/* Filters and Search */}
       <section className="py-8 border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-4 items-center justify-between">
-          {/* Search */}
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search coffee..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-
-          {/* Filters */}
-          <div className="flex gap-4 items-center">
-            {/* Category Filter */}
-            <div className="relative">
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
-              >
-                <Filter className="w-4 h-4" />
-                {selectedCategory}
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              {isFilterOpen && (
-                <div className="absolute top-full mt-2 right-0 bg-white border border-border rounded-lg shadow-lg z-10 min-w-[150px]">
-                  {categories.map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => {
-                        setSelectedCategory(category);
-                        setIsFilterOpen(false);
-                        setCurrentPage(1);
-                      }}
-                      className={`w-full text-left px-4 py-2 hover:bg-muted transition-colors ${
-                        selectedCategory === category ? 'bg-primary/10 text-primary' : ''
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
-              )}
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            {/* Search */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search coffee..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              />
             </div>
 
-            {/* Sort */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <option value="popularity">Most Popular</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-              <option value="name">Name: A to Z</option>
-            </select>
-          </div>
-        </div>
+            {/* Filters */}
+            <div className="flex gap-4 items-center">
+              {/* Category Filter */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
+                >
+                  <Filter className="w-4 h-4" />
+                  {selectedCategory}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                {isFilterOpen && (
+                  <div className="absolute top-full mt-2 right-0 bg-white border border-border rounded-lg shadow-lg z-10 min-w-[150px]">
+                    {categories.map((category) => (
+                      <button
+                        key={category}
+                        onClick={() => {
+                          setSelectedCategory(category);
+                          setIsFilterOpen(false);
+                          setCurrentPage(1);
+                        }}
+                        className={`w-full text-left px-4 py-2 hover:bg-muted transition-colors ${
+                          selectedCategory === category ? 'bg-primary/10 text-primary' : ''
+                        }`}
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-        <div className="mt-4 text-sm text-muted-foreground">
-          Showing {currentProducts.length} of {filteredAndSortedProducts.length} products
+              {/* Sort */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="popularity">Most Popular</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+                <option value="name">Name: A to Z</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-4 text-sm text-muted-foreground">
+            Showing {currentProducts.length} of {filteredAndSortedProducts.length} products
+          </div>
         </div>
       </section>
 
@@ -169,7 +171,7 @@ const Products = () => {
               <p className="text-lg text-muted-foreground">No products found matching your criteria.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {currentProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -179,25 +181,7 @@ const Products = () => {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center mt-12">
-              <div className="flex items-center justify-between mb-4">
-          <div className="flex gap-2">
-            {['Small', 'Medium', 'Large'].map((size) => (
-              <label key={size} className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name={`size-${product.id}`}
-                  value={size}
-                  checked={selectedSize === size}
-                  onChange={() => setSelectedSize(size)}
-                  className="form-radio h-4 w-4 text-primary transition-colors duration-200 focus:ring-primary"
-                />
-                <span className="ml-1 text-sm text-gray-700">{size}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex gap-2">
+              <div className="flex gap-2">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
@@ -235,25 +219,31 @@ const Products = () => {
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [selectedSize, setSelectedSize] = useState('Medium');
 
   const handleViewDetails = (e) => {
     e.preventDefault();
     navigate(`/products/${product.id}`);
   };
 
-  const [selectedSize, setSelectedSize] = useState('Medium');
-
   const handleAddToCart = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     const priceKey = `price_${selectedSize.toLowerCase()}`;
     const selectedPrice = product[priceKey] || product.price;
     addToCart(product, selectedSize, 1, selectedPrice);
   };
 
+  const handleSizeChange = (size, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedSize(size);
+  };
+
   return (
-    <div className="group relative bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300 w-full">
+    <div className="group relative bg-white rounded-lg shadow-sm border border-border hover:shadow-lg transition-all duration-300 overflow-hidden">
       {/* Image */}
-      <div className="aspect-square overflow-hidden rounded-t-lg cursor-pointer" onClick={handleViewDetails}>
+      <div className="aspect-square overflow-hidden cursor-pointer" onClick={handleViewDetails}>
         <img
           src={product.image_url || '/placeholder-coffee.jpg'}
           alt={product.name}
@@ -262,25 +252,27 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content */}
-      <div className="p-2 sm:p-3 md:p-4">
+      <div className="p-2 sm:p-3 md:p-4 space-y-2">
         <h3
-          className="font-semibold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors cursor-pointer truncate"
+          className="font-semibold text-sm sm:text-base md:text-lg group-hover:text-primary transition-colors cursor-pointer line-clamp-2"
           onClick={handleViewDetails}
         >
           {product.name}
         </h3>
-        <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2">{product.description}</p>
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{product.description}</p>
 
-        <div className="flex flex-wrap gap-1 mb-1 sm:mb-2">
-          {product.category && (
-            <span className="inline-block bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full text-xs">
+        {/* Category */}
+        {product.category && (
+          <div className="flex flex-wrap gap-1">
+            <span className="inline-block bg-muted text-muted-foreground px-2 py-0.5 rounded-full text-xs">
               {product.category}
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
+        {/* Rating */}
         {product.rating && (
-          <div className="flex items-center gap-1 mb-1 sm:mb-2">
+          <div className="flex items-center gap-1">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -295,7 +287,8 @@ const ProductCard = ({ product }) => {
           </div>
         )}
 
-        <div className="flex items-center justify-between mb-1 sm:mb-2">
+        {/* Price */}
+        <div className="flex items-center justify-between">
           <span className="text-sm sm:text-base md:text-lg font-bold text-primary">
             EGP{
               selectedSize === 'Small' ? product.price_small :
@@ -304,27 +297,30 @@ const ProductCard = ({ product }) => {
               product.price_medium // Fallback to medium if selectedSize is not recognized
             }
           </span>
-          <div className="flex gap-1">
-              {['Small', 'Medium', 'Large'].map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`px-2 py-0.5 border rounded-md text-xs font-medium transition-all duration-200
-                    ${selectedSize === size
-                      ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                      : 'bg-background text-muted-foreground border-border hover:bg-muted'}
-                  `}
-                >
-                  {size.charAt(0)}
-                </button>
-              ))}
-            </div>
         </div>
 
-        <div className="flex gap-1">
+        {/* Size Selection */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-1">
+          {['Small', 'Medium', 'Large'].map((size) => (
+            <button
+              key={size}
+              onClick={(e) => handleSizeChange(size, e)}
+              className={`flex-1 w-full px-2 py-1 border rounded-md text-xs font-medium transition-all duration-200
+                ${selectedSize === size
+                  ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                  : 'bg-background text-muted-foreground border-border hover:bg-muted'}
+              `}
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-2">
           <button
             onClick={handleViewDetails}
-            className="flex-1 flex items-center justify-center gap-1 px-2 py-1 sm:px-3 sm:py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white"
+            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors"
           >
             <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="text-xs sm:text-sm">View</span>
@@ -332,7 +328,7 @@ const ProductCard = ({ product }) => {
           <button
             onClick={handleAddToCart}
             disabled={!product.in_stock}
-            className="flex-1 flex items-center justify-center gap-1 btn-coffee px-2 py-1 sm:px-3 sm:py-2 rounded-lg disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-1 btn-coffee px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg disabled:opacity-50"
           >
             <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="text-xs sm:text-sm">Add</span>

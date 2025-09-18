@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Menu, X, User, LogOut, History, ChevronDown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,6 +11,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
   const { getCartItemCount } = useCart();
@@ -68,11 +70,36 @@ const Navbar = () => {
     };
   }, [isAccountDropdownOpen]);
 
+  // Handle navbar scroll behavior
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== 'undefined') {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+          // Scrolling down & past navbar height
+          setIsVisible(false);
+        } else {
+          // Scrolling up or at the top
+          setIsVisible(true);
+        }
+        
+        lastScrollY.current = currentScrollY;
+      }
+    };
+    
+    window.addEventListener('scroll', controlNavbar);
+    
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, []);
+
   return (
     <>
-      <nav className="bg-white shadow-sm border-b border-border sticky top-0 z-50">
+      <nav className={`bg-white shadow-sm border-b border-border sticky top-0 z-50 w-full transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 relative">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
@@ -178,7 +205,7 @@ const Navbar = () => {
               {/* Mobile menu button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors"
+                className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors absolute right-0 top-1/2 transform -translate-y-1/2"
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
