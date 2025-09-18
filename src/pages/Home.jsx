@@ -299,7 +299,7 @@ const ProductCard = ({ product }) => {
     let actualSize = '';
     if (selectedSize === '50g') actualSize = 'small';
     else if (selectedSize === '100g') actualSize = 'medium';
-    else if (selectedSize === '250g') actualSize = 'large';
+    else if (selectedSize === '200g') actualSize = 'large';
     
     const priceKey = `price_${actualSize}`;
     const selectedPrice = product[priceKey] || product.price;
@@ -336,7 +336,7 @@ const ProductCard = ({ product }) => {
               EGP{
                 selectedSize === '50g' ? product.price_small :
                 selectedSize === '100g' ? product.price_medium :
-                selectedSize === '250g' ? product.price_large :
+                selectedSize === '200g' ? product.price_large :
                 product.price // Fallback to base price if no size matches
               }
             </span>
@@ -352,7 +352,7 @@ const ProductCard = ({ product }) => {
           
           {/* Size Selection - Prevent navigation */}
           <div className="flex flex-wrap items-center justify-center gap-1">
-            {['50g', '100g', '250g'].map((size) => (
+            {['50g', '100g', '200g'].map((size) => (
               <button
                 key={size}
                 onClick={(e) => handleSizeChange(size, e)}
