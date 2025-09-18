@@ -19,7 +19,9 @@ const Home = () => {
       <section 
         className="relative flex items-center justify-center hero-bg min-h-[600px] py-16"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://raw.githubusercontent.com/AbanoupRefat/CoffeMaker/refs/heads/main/src/assets/prxn5iEqjUkk.jpg')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://github.com/AbanoupRefat/CoffeMaker/blob/main/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png?raw=true')`,
+          backgroundPosition: '85% center',
+          backgroundSize: 'cover'
         }}
       >
         <div className="text-center text-white max-w-4xl mx-auto px-4">
@@ -31,11 +33,11 @@ const Home = () => {
                 Charcoal roasted
               </span>
             </h1>
-          <p dir="rtl" className="text-white text-xl font-bold leading-relaxed mt-4 max-w-2xl">
+          <p dir="rtl" className="text-white text-xl font-bold leading-relaxed mt-4 max-w-2xl mb-8">
               استمتع بأول تجربة
               قهوة محمصة عالفحم في مصر
             </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center fade-in-up">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center fade-in-up mt-4">
             <Link
               to="/products"
               className="btn-coffee px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center justify-center space-x-2"
