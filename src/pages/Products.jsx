@@ -307,9 +307,9 @@ const ProductCard = ({ product }) => {
         <div className="flex items-center justify-between">
           <span className="text-sm sm:text-base md:text-lg font-bold text-primary">
             EGP{
-              selectedSize === 'Small' ? product.price_small :
-              selectedSize === 'Medium' ? product.price_medium :
-              selectedSize === 'Large' ? product.price_large :
+              selectedSize === '50g' ? product.price_small :
+              selectedSize === '100g' ? product.price_medium :
+              selectedSize === '200g' ? product.price_large :
               product.price_medium // Fallback to medium if selectedSize is not recognized
             }
           </span>
@@ -317,7 +317,7 @@ const ProductCard = ({ product }) => {
 
         {/* Size Selection - Fixed for mobile */}
         <div className="flex flex-wrap items-center justify-center gap-1">
-          {['Small', 'Medium', 'Large'].map((size) => (
+          {['50g', '100g', '200g'].map((size) => (
             <button
               key={size}
               onClick={(e) => handleSizeChange(size, e)}
