@@ -271,7 +271,7 @@ const Home = () => {
               <ul className="space-y-2">
                 <li><Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</Link></li>
                 <li><Link to="/shipping-info" className="text-muted-foreground hover:text-primary transition-colors">Shipping Info</Link></li>
-                <li><Link to="/returns" className="text-muted-foreground hover:text-primary transition-colors">Returns</Link></li>
+
                 <li><Link to="/support" className="text-muted-foreground hover:text-primary transition-colors">Support</Link></li>
               </ul>
             </div>
