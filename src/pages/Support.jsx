@@ -78,7 +78,7 @@ const Support = () => {
             <div className="bg-white rounded-lg shadow-sm border border-border p-6">
               <h3 className="text-lg font-semibold mb-2">How long does shipping take?</h3>
               <p className="text-muted-foreground">
-                We offer free standard shipping on orders over $50, which typically takes 3-5 business days. 
+                We offer free standard shipping on orders over $50, which typically takes 3-7 business days. 
                 Express shipping options are available for faster delivery.
               </p>
             </div>

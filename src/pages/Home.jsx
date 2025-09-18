@@ -223,10 +223,17 @@ const Home = () => {
             />
           </div>
           <div className="md:w-1/2 text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">قصتنا</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">قصة قهوتنا</h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-4">
               قصتنا بدأت مع أول حبوب قهوة لامست نار الفحم، لتخرج بطعم أصيل ورائحة تحفظ سرّ الأجداد. نحن الأوائل في التحميص على الفحم، نمنح كل فنجان نكهة قوية وذكرى لا تُنسى
             </p>
+            <Link
+              to="/about"
+              className="btn-coffee px-8 py-3 rounded-lg font-semibold inline-flex items-center space-x-2 mt-4"
+            >
+              <span>Read More</span>
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
