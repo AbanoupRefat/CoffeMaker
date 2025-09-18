@@ -6,23 +6,26 @@ let productsCache = null;
 let lastFetchTime = 0;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache duration
 
-export const useProducts = () => {
+export const useProducts = (categoryId = null) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchProducts = async (forceRefresh = false) => {
+  const fetchProducts = async (forceRefresh = false, categoryId = null) => {
     try {
       // Check if we have cached data and it's still valid
       const now = Date.now();
-      if (!forceRefresh && productsCache && (now - lastFetchTime < CACHE_DURATION)) {
-        setProducts(productsCache);
+      const cacheKey = categoryId ? `category_${categoryId}` : 'all';
+      
+      if (!forceRefresh && productsCache && productsCache[cacheKey] && (now - lastFetchTime < CACHE_DURATION)) {
+        setProducts(productsCache[cacheKey]);
         setLoading(false);
         return;
       }
 
       setLoading(true);
-      const { data, error } = await supabase
+      // Start building the query
+      let query = supabase
         .from('products')
         .select(`
           *,
@@ -34,16 +37,24 @@ export const useProducts = () => {
           price_small,
           price_medium,
           price_large
-        `)
-        .order('created_at', { ascending: false });
+        `);
+        
+      // Add category filter if provided
+      if (categoryId) {
+        query = query.eq('category_id', categoryId);
+      }
+      
+      // Execute the query with ordering
+      const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) throw error;
       
       // Update cache
-      productsCache = data || [];
+      if (!productsCache) productsCache = {};
+      productsCache[cacheKey] = data || [];
       lastFetchTime = now;
       
-      setProducts(productsCache);
+      setProducts(productsCache[cacheKey]);
     } catch (err) {
       setError(err.message);
       console.error('Error fetching products:', err);
@@ -54,14 +65,15 @@ export const useProducts = () => {
 
   useEffect(() => {
     // Immediately use cache if available
-    if (productsCache) {
-      setProducts(productsCache);
+    const cacheKey = categoryId ? `category_${categoryId}` : 'all';
+    if (productsCache && productsCache[cacheKey]) {
+      setProducts(productsCache[cacheKey]);
       setLoading(false);
     }
     
     // Always fetch to ensure data is up-to-date
-    fetchProducts();
-  }, []);
+    fetchProducts(false, categoryId);
+  }, [categoryId]);
 
   const addProduct = async (product) => {
     try {

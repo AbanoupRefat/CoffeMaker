@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search, Filter, Star, ChevronDown, Loader2, Eye, ShoppingCart } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
+import { useCategories } from '../hooks/useCategories';
 import { useCart, useToast } from '../App';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,26 +9,23 @@ import { useNavigate } from 'react-router-dom';
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [sortBy, setSortBy] = useState('popularity');
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const { products, loading, error } = useProducts();
+  const { categories, loading: categoriesLoading, error: categoriesError } = useCategories();
+  const { products, loading: productsLoading, error: productsError, fetchProducts } = useProducts(selectedCategoryId);
   const productsPerPage = 8;
 
-  // Extract categories
-  const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
-    return ['All', ...uniqueCategories];
-  }, [products]);
+  // No need for additional effect as useProducts now handles category filtering internally
 
   // Filter + Sort
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-      return matchesSearch && matchesCategory;
+      return matchesSearch;
     });
 
     filtered.sort((a, b) => {
@@ -54,6 +52,9 @@ const Products = () => {
     currentPage * productsPerPage
   );
 
+  const loading = productsLoading || categoriesLoading;
+  const error = productsError || categoriesError;
+  
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -123,19 +124,34 @@ const Products = () => {
                 </button>
                 {isFilterOpen && (
                   <div className="absolute top-full mt-2 right-0 bg-white border border-border rounded-lg shadow-lg z-10 min-w-[150px]">
+                    <button
+                      key="all"
+                      onClick={() => {
+                        setSelectedCategory('All');
+                        setSelectedCategoryId(null);
+                        setIsFilterOpen(false);
+                        setCurrentPage(1);
+                      }}
+                      className={`w-full text-left px-4 py-2 hover:bg-muted transition-colors ${
+                        selectedCategory === 'All' ? 'bg-primary/10 text-primary' : ''
+                      }`}
+                    >
+                      All
+                    </button>
                     {categories.map((category) => (
                       <button
-                        key={category}
+                        key={category.id}
                         onClick={() => {
-                          setSelectedCategory(category);
+                          setSelectedCategory(category.name);
+                          setSelectedCategoryId(category.id);
                           setIsFilterOpen(false);
                           setCurrentPage(1);
                         }}
                         className={`w-full text-left px-4 py-2 hover:bg-muted transition-colors ${
-                          selectedCategory === category ? 'bg-primary/10 text-primary' : ''
+                          selectedCategoryId === category.id ? 'bg-primary/10 text-primary' : ''
                         }`}
                       >
-                        {category}
+                        {category.name}
                       </button>
                     ))}
                   </div>
