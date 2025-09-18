@@ -22,21 +22,48 @@ export const useCategories = () => {
       }
 
       setLoading(true);
-      const { data, error } = await supabase
+      
+      // Add timeout to the Supabase query
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Categories fetch timed out')), 3000); // 3 second timeout
+      });
+      
+      const fetchPromise = supabase
         .from('categories')
         .select('*')
         .order('name');
+      
+      // Race between the fetch and the timeout
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise])
+        .catch(err => {
+          console.log('Categories fetch aborted:', err.message);
+          // Return cached data if available, or empty array
+          return { 
+            data: categoriesCache || [], 
+            error: null 
+          };
+        });
 
       if (error) throw error;
       
-      // Update cache
-      categoriesCache = data || [];
-      lastFetchTime = now;
-      
-      setCategories(categoriesCache);
+      // Update cache only if we got new data
+      if (data) {
+        categoriesCache = data || [];
+        lastFetchTime = now;
+        
+        setCategories(categoriesCache);
+      } else if (categoriesCache) {
+        // Use cached data if the request failed but we have cache
+        setCategories(categoriesCache);
+      }
     } catch (err) {
       setError(err.message);
       console.error('Error fetching categories:', err);
+      
+      // Use cached data on error if available
+      if (categoriesCache) {
+        setCategories(categoriesCache);
+      }
     } finally {
       setLoading(false);
     }

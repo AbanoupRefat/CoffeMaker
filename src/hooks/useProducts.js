@@ -44,20 +44,47 @@ export const useProducts = (categoryId = null) => {
         query = query.eq('category_id', categoryId);
       }
       
-      // Execute the query with ordering
-      const { data, error } = await query.order('created_at', { ascending: false });
+      // Add ordering
+      query = query.order('created_at', { ascending: false });
+      
+      // Add timeout to the Supabase query
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timed out')), 3000); // 3 second timeout
+      });
+      
+      // Execute the query with timeout
+      const { data, error } = await Promise.race([query, timeoutPromise])
+        .catch(err => {
+          console.log('Products fetch aborted:', err.message);
+          // Return cached data if available, or empty array
+          return { 
+            data: (productsCache && productsCache[cacheKey]) ? productsCache[cacheKey] : [], 
+            error: null 
+          };
+        });
 
       if (error) throw error;
       
-      // Update cache
-      if (!productsCache) productsCache = {};
-      productsCache[cacheKey] = data || [];
-      lastFetchTime = now;
-      
-      setProducts(productsCache[cacheKey]);
+      // Update cache only if we got new data
+      if (data) {
+        if (!productsCache) productsCache = {};
+        productsCache[cacheKey] = data || [];
+        lastFetchTime = now;
+        
+        setProducts(productsCache[cacheKey]);
+      } else if (productsCache && productsCache[cacheKey]) {
+        // Use cached data if the request failed but we have cache
+        setProducts(productsCache[cacheKey]);
+      }
     } catch (err) {
       setError(err.message);
       console.error('Error fetching products:', err);
+      
+      // Use cached data on error if available
+      const cacheKey = categoryId ? `category_${categoryId}` : 'all';
+      if (productsCache && productsCache[cacheKey]) {
+        setProducts(productsCache[cacheKey]);
+      }
     } finally {
       setLoading(false);
     }

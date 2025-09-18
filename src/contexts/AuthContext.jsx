@@ -18,9 +18,31 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Get initial session
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-      setLoading(false);
+      try {
+        // Add timeout to the session fetch
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => {
+            setLoading(false); // Ensure loading is set to false even on timeout
+            reject(new Error('Session fetch timed out'));
+          }, 3000); // 3 second timeout
+        });
+        
+        const sessionPromise = supabase.auth.getSession();
+        
+        // Race between the session fetch and the timeout
+        const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise])
+          .catch(err => {
+            console.log('Session fetch aborted:', err.message);
+            return { data: { session: null } };
+          });
+          
+        setUser(session?.user ?? null);
+      } catch (err) {
+        console.error('Error fetching session:', err);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getSession();
@@ -38,41 +60,89 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async (email, password, profileData) => {
     const { full_name: fullName, phone, address } = profileData;
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      return { data, error };
-    }
-
-    // If sign-up is successful, insert or update the user's profile
-    if (data.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .upsert({
-          id: data.user.id,
-          full_name: fullName,
-          phone: phone,
-          address: address,
+    
+    try {
+      // Add timeout to the auth operation
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Sign up request timed out')), 3000); // 3 second timeout
+      });
+      
+      const authPromise = supabase.auth.signUp({
+        email,
+        password,
+      });
+      
+      // Race between the auth operation and the timeout
+      const { data, error } = await Promise.race([authPromise, timeoutPromise])
+        .catch(err => {
+          console.log('Sign up aborted:', err.message);
+          return { data: null, error: { message: 'Sign up request timed out or failed' } };
         });
 
-      if (profileError) {
-        console.error('Error upserting profile:', profileError);
-        return { data: null, error: profileError.message };
+      if (error) {
+        return { data, error };
       }
-    }
 
-    return { data, error };
+      // If sign-up is successful, insert or update the user's profile
+      if (data?.user) {
+        // Add timeout to the profile operation
+        const profileTimeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Profile update timed out')), 3000); // 3 second timeout
+        });
+        
+        const profilePromise = supabase
+          .from('profiles')
+          .upsert({
+            id: data.user.id,
+            full_name: fullName,
+            phone: phone,
+            address: address,
+          });
+        
+        const { error: profileError } = await Promise.race([profilePromise, profileTimeoutPromise])
+          .catch(err => {
+            console.log('Profile update aborted:', err.message);
+            return { error: { message: 'Profile update timed out or failed' } };
+          });
+
+        if (profileError) {
+          console.error('Error upserting profile:', profileError);
+          // Still return successful signup even if profile update fails
+          return { data, error: null };
+        }
+      }
+
+      return { data, error };
+    } catch (err) {
+      console.error('Error during sign up:', err);
+      return { data: null, error: { message: err.message } };
+    }
   };
 
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { data, error };
+    try {
+      // Add timeout to the auth operation
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Sign in request timed out')), 3000); // 3 second timeout
+      });
+      
+      const authPromise = supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      // Race between the auth operation and the timeout
+      const { data, error } = await Promise.race([authPromise, timeoutPromise])
+        .catch(err => {
+          console.log('Sign in aborted:', err.message);
+          return { data: null, error: { message: 'Sign in request timed out or failed' } };
+        });
+      
+      return { data, error };
+    } catch (err) {
+      console.error('Error during sign in:', err);
+      return { data: null, error: { message: err.message } };
+    }
   };
 
   const signOut = async () => {

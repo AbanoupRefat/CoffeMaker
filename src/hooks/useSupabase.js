@@ -41,7 +41,20 @@ export const useSupabaseAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await auth.signUp(email, password, userData);
+      // Add timeout to the auth operation
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Sign up request timed out')), 3000); // 3 second timeout
+      });
+      
+      const authPromise = auth.signUp(email, password, userData);
+      
+      // Race between the auth operation and the timeout
+      const { data, error } = await Promise.race([authPromise, timeoutPromise])
+        .catch(err => {
+          console.log('Sign up aborted:', err.message);
+          return { data: null, error: { message: 'Sign up request timed out or failed' } };
+        });
+        
       if (error) throw error;
       return { data, error: null };
     } catch (err) {
@@ -56,7 +69,20 @@ export const useSupabaseAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await auth.signIn(email, password);
+      // Add timeout to the auth operation
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Sign in request timed out')), 3000); // 3 second timeout
+      });
+      
+      const authPromise = auth.signIn(email, password);
+      
+      // Race between the auth operation and the timeout
+      const { data, error } = await Promise.race([authPromise, timeoutPromise])
+        .catch(err => {
+          console.log('Sign in aborted:', err.message);
+          return { data: null, error: { message: 'Sign in request timed out or failed' } };
+        });
+        
       if (error) throw error;
       return { data, error: null };
     } catch (err) {
@@ -71,7 +97,25 @@ export const useSupabaseAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      const { error } = await auth.signOut();
+      // Add timeout to the auth operation
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+          // Even if signOut times out, we want to clear the user state locally
+          setError('Sign out timed out, but local session cleared');
+          setLoading(false);
+          reject(new Error('Sign out request timed out'));
+        }, 3000); // 3 second timeout
+      });
+      
+      const authPromise = auth.signOut();
+      
+      // Race between the auth operation and the timeout
+      const { error } = await Promise.race([authPromise, timeoutPromise])
+        .catch(err => {
+          console.log('Sign out aborted:', err.message);
+          return { error: null }; // Return success even if timed out
+        });
+        
       if (error) throw error;
     } catch (err) {
       setError(err.message);

@@ -17,17 +17,32 @@ export const useProfile = () => {
 
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      
+      // Add timeout to the Supabase query
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timed out')), 3000); // 3 second timeout
+      });
+      
+      const fetchPromise = supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
+      
+      // Race between the fetch and the timeout
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise])
+        .catch(err => {
+          console.log('Fetch aborted:', err.message);
+          return { data: null, error: { message: 'Request timed out or failed' } };
+        });
 
       if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
         throw error;
       }
 
-      setProfile(data);
+      if (data) {
+        setProfile(data);
+      }
     } catch (err) {
       setError(err.message);
       console.error('Error fetching profile:', err);
