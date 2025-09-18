@@ -201,19 +201,10 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="bg-card rounded-lg shadow-sm border border-border p-6 card-hover">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">{testimonial.name}</h4>
-                    </div>
+                  <div className="mb-4">
+                    <h4 className="font-semibold">{testimonial.name}</h4>
                   </div>
-                  <p className="text-muted-foreground text-sm italic">"{testimonial.comment}"</p>
+                  <p dir="rtl" className="text-muted-foreground text-sm italic">"{testimonial.comment}"</p>
                 </div>
               ))}
             </div>
@@ -221,35 +212,21 @@ const Home = () => {
         </section>
       )}
 
-      {/* About Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Coffee Story</h2>
-              <p className="text-lg text-muted-foreground mb-6" dir="rtl">
-                بدأت قصة صانع القهوة فى بيت الأجداد وكانت العادة الصباحية التي تجمع الاقارب والاصدقاء 
-                هی تحضير القهوہ و الإهتمام بتفاصيل كل مرحلة باسلوب الأجداد الأصيل والبسيط ، وكانت جملة الجد الشهيرة هى «لو بتحبها أوى أعملها صح اوی»
-              </p>
-              <p className="text-lg text-muted-foreground mb-8" dir="rtl">
-                و تناقلت هذه العبارة عبر الزمن ونقلت معها حب القوة بين الأبناء حتى وصلت برائحتها ومذاقها المميز والاصيل باساليب التحضير الحديثة لتكون حضارة الأجداد بين أيدينا اليوم
-              </p>
-              <Link
-                to="/about"
-                className="btn-coffee px-6 py-3 rounded-lg font-semibold inline-flex items-center space-x-2"
-              >
-                <span>Learn More</span>
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </div>
-            <div className="relative">
-              <img
-                src="https://raw.githubusercontent.com/AbanoupRefat/CoffeMaker/refs/heads/main/src/assets/R8PPkbZfe6hI.jpg"
-                alt="Coffee plantation"
-                className="rounded-lg shadow-lg"
-              />
-              <div className="absolute inset-0 coffee-gradient opacity-20 rounded-lg"></div>
-            </div>
+      {/* Our Coffee Story Section */}
+      <section className="py-16 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-8">
+          <div className="md:w-1/2">
+            <img
+              src="https://github.com/AbanoupRefat/CoffeMaker/blob/main/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png?raw=true"
+              alt="Our Coffee Story"
+              className="rounded-lg shadow-lg object-cover w-full h-full"
+            />
+          </div>
+          <div className="md:w-1/2 text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">قصتنا</h2>
+            <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              قصتنا بدأت مع أول حبوب قهوة لامست نار الفحم، لتخرج بطعم أصيل ورائحة تحفظ سرّ الأجداد. نحن الأوائل في التحميص على الفحم، نمنح كل فنجان نكهة قوية وذكرى لا تُنسى
+            </p>
           </div>
         </div>
       </section>

@@ -93,26 +93,17 @@ export const products = [
 export const testimonials = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    comment: "The Ethiopian Yirgacheffe is absolutely incredible! The floral notes are so distinctive and the quality is unmatched.",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+    name: "Mohamed El Khodary",
+    comment: "انا مبقتش عارف اشرب القهوة غير من عندكم"
   },
   {
     id: 2,
-    name: "Michael Chen",
-    comment: "I've been ordering from CoffeeMaker for over a year. The Colombian Supremo is my daily go-to coffee.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    name: "Mohamed El Maghraby",
+    comment: "البن تحفة بصراحة تحفة تسلم ايديكم و دا حقيقي والله"
   },
   {
     id: 3,
-    name: "Emma Rodriguez",
-    comment: "Fast delivery and amazing coffee quality. The packaging keeps everything fresh. Highly recommend!",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-  },
-  {
-    id: 4,
-    name: "David Thompson",
-    comment: "The Guatemala Antigua has such unique smoky notes. Perfect for my morning French press routine.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+    name: "Mohamed Hussien",
+    comment: "القهوة حلوة جدا الوش مظبوط و الحموضة قليلة و after taste جامد تسلم ايديكم"
   }
 ];
