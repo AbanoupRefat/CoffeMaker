@@ -66,13 +66,7 @@ const Home = () => {
               <h3 className="text-xl font-semibold mb-2">Premium Quality</h3>
               <p className="text-muted-foreground">Hand-selected beans from the world's finest coffee regions</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 coffee-gradient rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
-              <p className="text-muted-foreground">Fresh coffee delivered to your door within 2-3 business days</p>
-            </div>
+
             <div className="text-center">
               <div className="w-16 h-16 coffee-gradient rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-8 h-8 text-white" />

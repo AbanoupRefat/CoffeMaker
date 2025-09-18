@@ -63,7 +63,7 @@ const AboutUs = () => {
               that caters to every palate.
             </p>
             <p className="text-lg text-gray-600 leading-relaxed">
-              Beyond the brew, CoffeeCraft is about connection. It's about the
+              Beyond the brew, CoffeeMaker is about connection. It's about the
               conversations sparked over a warm mug, the quiet moments of
               reflection, and the shared joy of a perfectly crafted beverage.
               Join us in celebrating the art and science of coffee, and let us
@@ -92,7 +92,7 @@ const AboutUs = () => {
           </div>
 
           <p className="text-center text-gray-600 mt-4">
-            Experience the artistry behind every cup of CoffeeCraft coffee
+            Experience the artistry behind every cup of CoffeeMaker coffee
           </p>
         </div>
 
