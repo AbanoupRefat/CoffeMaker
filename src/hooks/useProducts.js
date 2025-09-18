@@ -1,13 +1,26 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
+// Cache for products data
+let productsCache = null;
+let lastFetchTime = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache duration
+
 export const useProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (forceRefresh = false) => {
     try {
+      // Check if we have cached data and it's still valid
+      const now = Date.now();
+      if (!forceRefresh && productsCache && (now - lastFetchTime < CACHE_DURATION)) {
+        setProducts(productsCache);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       const { data, error } = await supabase
         .from('products')
@@ -25,7 +38,12 @@ export const useProducts = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setProducts(data || []);
+      
+      // Update cache
+      productsCache = data || [];
+      lastFetchTime = now;
+      
+      setProducts(productsCache);
     } catch (err) {
       setError(err.message);
       console.error('Error fetching products:', err);
@@ -35,6 +53,13 @@ export const useProducts = () => {
   };
 
   useEffect(() => {
+    // Immediately use cache if available
+    if (productsCache) {
+      setProducts(productsCache);
+      setLoading(false);
+    }
+    
+    // Always fetch to ensure data is up-to-date
     fetchProducts();
   }, []);
 
@@ -46,7 +71,12 @@ export const useProducts = () => {
         .select();
 
       if (error) throw error;
-      setProducts(prev => [data[0], ...prev]);
+      
+      // Update local state and cache
+      const newProducts = [data[0], ...products];
+      setProducts(newProducts);
+      productsCache = newProducts;
+      
       return { data: data[0], error: null };
     } catch (err) {
       return { data: null, error: err.message };
@@ -62,7 +92,12 @@ export const useProducts = () => {
         .select();
 
       if (error) throw error;
-      setProducts(prev => prev.map(p => p.id === id ? data[0] : p));
+      
+      // Update local state and cache
+      const newProducts = products.map(p => p.id === id ? data[0] : p);
+      setProducts(newProducts);
+      productsCache = newProducts;
+      
       return { data: data[0], error: null };
     } catch (err) {
       return { data: null, error: err.message };
@@ -77,7 +112,12 @@ export const useProducts = () => {
         .eq('id', id);
 
       if (error) throw error;
-      setProducts(prev => prev.filter(p => p.id !== id));
+      
+      // Update local state and cache
+      const newProducts = products.filter(p => p.id !== id);
+      setProducts(newProducts);
+      productsCache = newProducts;
+      
       return { error: null };
     } catch (err) {
       return { error: err.message };
