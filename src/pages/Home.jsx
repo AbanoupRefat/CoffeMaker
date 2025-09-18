@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Star, ArrowRight, Coffee, Truck, Shield, Heart, Instagram, Facebook, MessageCircle, Loader2, ShoppingCart, Eye } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
-import { products as staticProducts, testimonials } from '../data/products';
+import { testimonials } from '../data/products';
 import { useCart, useToast } from '../App';
 
 const Home = () => {
   const { products, loading, error } = useProducts();
   
-  // Use API products if available, otherwise fallback to static products
-  const availableProducts = products.length > 0 ? products : staticProducts;
-  const featuredProducts = availableProducts.filter(product => product.featured);
-  const offerProducts = availableProducts.filter(product => product.is_offer || product.isOffer).slice(0, 3);
+  // Only use API products
+  const featuredProducts = products.filter(product => product.featured);
+  const offerProducts = products.filter(product => product.is_offer || product.isOffer).slice(0, 3);
 
   return (
     <div className="min-h-screen">
@@ -104,7 +103,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-              {availableProducts.slice(0, 4).map((product) => (
+              {products.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -292,12 +291,17 @@ const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const { showToast } = useToast();
   
-  const [selectedSize, setSelectedSize] = useState('Medium');
+  const [selectedSize, setSelectedSize] = useState('100g');
 
   const handleAddToCart = (e) => {
     e.preventDefault(); // Prevent navigation to product detail
     e.stopPropagation(); // Stop event bubbling
-    const priceKey = `price_${selectedSize.toLowerCase()}`;
+    let actualSize = '';
+    if (selectedSize === '50g') actualSize = 'small';
+    else if (selectedSize === '100g') actualSize = 'medium';
+    else if (selectedSize === '250g') actualSize = 'large';
+    
+    const priceKey = `price_${actualSize}`;
     const selectedPrice = product[priceKey] || product.price;
     addToCart(product, selectedSize, 1, selectedPrice);
   };
@@ -330,9 +334,9 @@ const ProductCard = ({ product }) => {
           <div className="flex items-center justify-between">
             <span className="text-sm sm:text-base md:text-lg font-bold text-primary">
               EGP{
-                selectedSize === 'Small' ? product.price_small :
-                selectedSize === 'Medium' ? product.price_medium :
-                selectedSize === 'Large' ? product.price_large :
+                selectedSize === '50g' ? product.price_small :
+                selectedSize === '100g' ? product.price_medium :
+                selectedSize === '250g' ? product.price_large :
                 product.price // Fallback to base price if no size matches
               }
             </span>
@@ -348,7 +352,7 @@ const ProductCard = ({ product }) => {
           
           {/* Size Selection - Prevent navigation */}
           <div className="flex flex-wrap items-center justify-center gap-1">
-            {['Small', 'Medium', 'Large'].map((size) => (
+            {['50g', '100g', '250g'].map((size) => (
               <button
                 key={size}
                 onClick={(e) => handleSizeChange(size, e)}

@@ -97,7 +97,7 @@ const FAQ = () => {
                 Email Support
               </a>
               <a
-                href="https://wa.me/15551234567"
+                href="https://wa.me/+201001246102"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-semibold hover:bg-secondary/80 transition-colors"
