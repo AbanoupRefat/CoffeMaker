@@ -11,6 +11,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
   const { getCartItemCount } = useCart();
@@ -67,10 +69,28 @@ const Navbar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isAccountDropdownOpen]);
+  
+  // Handle navbar scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      const isScrollingDown = prevScrollPos < currentScrollPos;
+      const isScrollingUp = prevScrollPos > currentScrollPos;
+      
+      // Only update visibility when scrolling more than 10px
+      if (Math.abs(prevScrollPos - currentScrollPos) > 10) {
+        setVisible(!isScrollingDown || currentScrollPos < 10);
+        setPrevScrollPos(currentScrollPos);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollPos]);
 
   return (
     <>
-      <nav className="bg-white shadow-sm border-b border-border sticky top-0 z-50">
+      <nav className={`bg-white shadow-sm border-b border-border fixed w-full top-0 z-50 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -99,7 +119,7 @@ const Navbar = () => {
             </div>
 
             {/* Right side items */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {/* Cart */}
               <Link
                 to="/cart"
@@ -115,13 +135,13 @@ const Navbar = () => {
               <div className="relative account-dropdown">
                 <button
                   onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                  className="flex items-center space-x-1 px-2 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
-                  <User className="w-4 h-4" />
-                  <span className="text-sm font-medium">
+                  <User className="w-3.5 h-3.5" />
+                  <span className="text-xs font-medium hidden sm:inline">
                     {user ? getDisplayName() : 'Account'}
                   </span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${isAccountDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isAccountDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {isAccountDropdownOpen && (
@@ -178,7 +198,7 @@ const Navbar = () => {
               {/* Mobile menu button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors"
+                className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors ml-1 flex-shrink-0"
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>

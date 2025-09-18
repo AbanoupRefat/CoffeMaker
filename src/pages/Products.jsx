@@ -299,13 +299,13 @@ const ProductCard = ({ product }) => {
           </span>
         </div>
 
-        {/* Size Selection */}
-        <div className="flex items-center justify-center gap-1">
+        {/* Size Selection - Fixed for mobile */}
+        <div className="flex flex-wrap items-center justify-center gap-1">
           {['Small', 'Medium', 'Large'].map((size) => (
             <button
               key={size}
               onClick={(e) => handleSizeChange(size, e)}
-              className={`flex-1 px-2 py-1 border rounded-md text-xs font-medium transition-all duration-200
+              className={`flex-1 min-w-[60px] px-2 py-1 border rounded-md text-xs font-medium transition-all duration-200
                 ${selectedSize === size
                   ? 'bg-primary text-primary-foreground border-primary shadow-sm'
                   : 'bg-background text-muted-foreground border-border hover:bg-muted'}
