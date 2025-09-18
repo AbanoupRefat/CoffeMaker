@@ -229,14 +229,12 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Coffee Story</h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                For over two decades, we've been passionate about bringing you the world's finest coffee. 
-                From the misty mountains of Ethiopia to the volcanic soils of Guatemala, we source our beans 
-                directly from farmers who share our commitment to quality and sustainability.
+              <p className="text-lg text-muted-foreground mb-6" dir="rtl">
+                بدأت قصة صانع القهوة فى بيت الأجداد وكانت العادة الصباحية التي تجمع الاقارب والاصدقاء 
+                هی تحضير القهوہ و الإهتمام بتفاصيل كل مرحلة باسلوب الأجداد الأصيل والبسيط ، وكانت جملة الجد الشهيرة هى «لو بتحبها أوى أعملها صح اوی»
               </p>
-              <p className="text-lg text-muted-foreground mb-8">
-                Every cup tells a story of tradition, craftsmanship, and the pursuit of perfection. 
-                Join us on this journey and discover what makes our coffee truly exceptional.
+              <p className="text-lg text-muted-foreground mb-8" dir="rtl">
+                و تناقلت هذه العبارة عبر الزمن ونقلت معها حب القوة بين الأبناء حتى وصلت برائحتها ومذاقها المميز والاصيل باساليب التحضير الحديثة لتكون حضارة الأجداد بين أيدينا اليوم
               </p>
               <Link
                 to="/about"
