@@ -54,20 +54,8 @@ const AboutUs = () => {
             <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
               Our Mission
             </h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-4">
-              Our mission is simple: to provide an unparalleled coffee
-              experience, from bean to cup. We are dedicated to delivering not
-              just coffee, but a commitment to quality, sustainability, and
-              community. We believe in fostering a deeper appreciation for
-              coffee by educating our customers and offering a curated selection
-              that caters to every palate.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              Beyond the brew, CoffeeMaker is about connection. It's about the
-              conversations sparked over a warm mug, the quiet moments of
-              reflection, and the shared joy of a perfectly crafted beverage.
-              Join us in celebrating the art and science of coffee, and let us
-              help you craft your perfect coffee experience, every single day.
+            <p className="text-gray-700 text-lg leading-relaxed mb-6">
+              مهمتنا هي أن نبقي روح صباحات الأجداد حيّة، حيث كانت القهوة أكثر من مجرد شراب، بل كانت قلب اللقاء ودفء اللحظة. نستمد إلهامنا من كلمات الجد: "لو بتحبها أوي اعملها صح أوي"، فنحمل وصيته معنا في كل فنجان نقدّمه. نحن نحافظ على أصالة الحرفة بما فيها من عناية وصبر وعمق، ونمزجها بأساليب حديثة تجعل هذا الإرث حاضرًا اليوم. وباعتبارنا أوّل من قدّم القهوة المحمّصة على الفحم، نمنحها طعمًا جريئًا ونقيًا وخالدًا. كل رشفة نقدّمها هي جسر يصل بين الأمس واليوم، تحمل ذاكرة العائلة، ودفء البيت، ووعد القهوة كما يجب أن تكون.
             </p>
           </div>
         </div>
