@@ -14,19 +14,15 @@ const FAQ = () => {
   const faqs = [
     {
       question: "What types of coffee beans do you offer?",
-      answer: "We offer a wide variety of premium coffee beans including single-origin coffees from Ethiopia, Colombia, Guatemala, and Brazil, as well as our signature blends. All our beans are ethically sourced and roasted to perfection."
+      answer: "We offer a wide variety of premium coffee beans including our signature blends. All our beans are ethically sourced and roasted to perfection."
     },
     {
       question: "How fresh are your coffee beans?",
       answer: "All our coffee beans are roasted within 7 days of shipping. We roast in small batches to ensure maximum freshness and flavor. Each package includes the roast date so you know exactly when your coffee was prepared."
     },
     {
-      question: "Do you offer decaffeinated options?",
-      answer: "Yes! We offer several decaffeinated options including our popular Decaf Delight blend. Our decaf beans are processed using the Swiss Water method, which preserves the coffee's natural flavors without using chemicals."
-    },
-    {
       question: "What grind sizes do you offer?",
-      answer: "We offer whole beans as well as ground coffee in various sizes: coarse (French press), medium (drip coffee), medium-fine (pour-over), fine (espresso), and extra-fine (Turkish coffee). You can select your preferred grind during checkout."
+      answer: "We offer whole beans as well as ground coffee in various sizes: fine (espresso), and extra-fine (Turkish coffee)."
     },
     {
       question: "How should I store my coffee?",
@@ -38,7 +34,7 @@ const FAQ = () => {
     },
     {
       question: "What payment methods do you accept?",
-      answer: "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay, and cash on delivery for local orders."
+      answer: "We accept cash on delivery for local orders."
     },
     {
       question: "Can I track my order?",
@@ -46,7 +42,7 @@ const FAQ = () => {
     },
     {
       question: "Do you ship internationally?",
-      answer: "Currently, we ship within the United States and Canada. We're working on expanding our international shipping options. Please check back soon or contact us for updates."
+      answer: "Currently, we ship within Egypt. We're working on expanding our international shipping options. Please check back soon or contact us for updates."
     },
     {
       question: "What if I'm not satisfied with my purchase?",
