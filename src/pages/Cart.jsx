@@ -59,16 +59,7 @@ const Cart = () => {
             <div className="space-y-4">
               {cartItems.map((item) => (
                 <div key={`${item.id}-${item.size}`} className="bg-card rounded-lg border border-border p-3 sm:p-4 md:p-6">
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4">
-                    {/* Product Image */}
-                    <div className="w-full sm:w-24 md:w-32 h-24 sm:h-24 md:h-32 flex-shrink-0">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    </div>
-
+                  <div className="flex flex-col gap-2">
                     {/* Product Details */}
                     <div className="flex-1">
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 sm:mb-3 md:mb-4">

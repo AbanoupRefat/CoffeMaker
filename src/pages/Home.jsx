@@ -302,7 +302,7 @@ const ProductCard = ({ product }) => {
     else if (selectedSize === '200g') actualSize = 'large';
     
     const priceKey = `price_${actualSize}`;
-    const selectedPrice = product[priceKey] || product.price;
+    const selectedPrice = product[priceKey] || product.price_medium; // Fallback to medium if no size matches
     addToCart(product, selectedSize, 1, selectedPrice);
   };
 

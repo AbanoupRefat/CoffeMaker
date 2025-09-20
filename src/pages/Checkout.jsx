@@ -111,10 +111,16 @@ const Checkout = () => {
 
     try {
       // Create shipping address object
+      // Get governorate name for display
+      const selectedGovernorate = governorates.find(gov => gov.id === formData.governorate);
+      const governorateName = selectedGovernorate ? selectedGovernorate.name : '';
+
+      // Create shipping address object
       const shippingAddress = {
         fullName: formData.fullName,
         address: formData.address,
         city: formData.city,
+        governorate: governorateName,
         phone: formData.phone,
         email: formData.email,
         orderNotes: formData.orderNotes
@@ -171,20 +177,13 @@ const Checkout = () => {
       
       if (itemsError) throw itemsError;
       
-      // Generate order number
-      const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
-      
       showToast('Order placed successfully!', 'success');
       clearCart();
-      
-      // Get governorate name for display
-      const selectedGovernorate = governorates.find(gov => gov.id === formData.governorate);
-      const governorateName = selectedGovernorate ? selectedGovernorate.name : '';
       
       // Navigate to success page with order details
       navigate('/order-success', { 
         state: { 
-          orderNumber,
+          orderId: orderData.id,
           customerInfo: shippingAddress,
           orderTotal: grandTotal.toFixed(2),
           shippingFee: shipping.toFixed(2),

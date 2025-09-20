@@ -25,7 +25,7 @@ const OrderSuccess = () => {
     return null;
   }
 
-  const { orderNumber, customerInfo, orderTotal, shippingFee, governorateName } = orderData;
+  const { orderId, customerInfo, orderTotal, shippingFee, governorateName } = orderData;
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,8 +49,8 @@ const OrderSuccess = () => {
               <h2 className="text-xl font-semibold mb-4">Order Details</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Order Number:</span>
-                  <span className="font-mono font-semibold">{orderNumber}</span>
+                  <span className="text-muted-foreground">Order ID:</span>
+                  <span className="font-mono font-semibold">{orderId}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Payment Method:</span>
@@ -132,7 +132,7 @@ const OrderSuccess = () => {
               </div>
               <h3 className="font-semibold mb-2">Delivery</h3>
               <p className="text-sm text-muted-foreground">
-                Your order will be delivered within 2-3 business days
+                Your order will be delivered from 3-7 business days
               </p>
             </div>
           </div>
@@ -144,12 +144,7 @@ const OrderSuccess = () => {
             <div>
               <h3 className="font-semibold mb-1">Estimated Delivery</h3>
               <p className="text-muted-foreground">
-                {new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
+                3-7 business days
               </p>
             </div>
             <div className="text-right">

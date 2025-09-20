@@ -66,7 +66,7 @@ function App() {
   const [toasts, setToasts] = useState([]);
 
   // Cart functions
-  const addToCart = (product, size = 'Medium', quantity = 1) => {
+  const addToCart = (product, size = 'Medium', quantity = 1, selectedPrice = null) => {
     const existingItem = cartItems.find(
       item => item.id === product.id && item.size === size
     );
@@ -78,15 +78,22 @@ function App() {
           : item
       ));
     } else {
-      let priceToUse = product.price; // Fallback to base price
-      if (size === 'Small') {
-        priceToUse = product.price_small;
-      } else if (size === 'Medium') {
-        priceToUse = product.price_medium;
-      } else if (size === 'Large') {
-        priceToUse = product.price_large;
+      // Use the selectedPrice if provided, otherwise calculate based on size
+      let priceToUse = selectedPrice;
+      
+      // If no selectedPrice was provided, calculate it based on size
+      if (priceToUse === null) {
+        priceToUse = product.price; // Fallback to base price
+        if (size === 'Small' || size === '50g') {
+          priceToUse = product.price_small || product.price;
+        } else if (size === 'Medium' || size === '100g') {
+          priceToUse = product.price_medium || product.price;
+        } else if (size === 'Large' || size === '200g') {
+          priceToUse = product.price_large || product.price;
+        }
       }
-      setCartItems([...cartItems, { ...product, size, quantity, price: priceToUse }]);
+      
+      setCartItems([...cartItems, { ...product, size, quantity, price: priceToUse, image: product.image_url || product.image || product.images?.[0] || '/placeholder.png' }]);
     }
     
     showToast('Product added to cart!', 'success');

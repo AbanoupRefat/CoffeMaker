@@ -235,7 +235,7 @@ const Products = () => {
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const [selectedSize, setSelectedSize] = useState('Medium');
+  const [selectedSize, setSelectedSize] = useState('100g');
 
   const handleViewDetails = (e) => {
     e.preventDefault();
@@ -245,7 +245,12 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const priceKey = `price_${selectedSize.toLowerCase()}`;
+    let actualSize = '';
+    if (selectedSize === '50g') actualSize = 'small';
+    else if (selectedSize === '100g') actualSize = 'medium';
+    else if (selectedSize === '200g') actualSize = 'large';
+    
+    const priceKey = `price_${actualSize}`;
     const selectedPrice = product[priceKey] || product.price;
     addToCart(product, selectedSize, 1, selectedPrice);
   };
