@@ -18,7 +18,7 @@ const Home = () => {
       <section 
         className="relative flex items-center justify-center hero-bg min-h-[600px] py-16"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://github.com/AbanoupRefat/CoffeMaker/blob/main/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png?raw=true')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png')`,
           backgroundPosition: '85% center',
           backgroundSize: 'cover'
         }}
