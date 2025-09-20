@@ -96,7 +96,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
-                <img src="https://github.com/AbanoupRefat/CoffeMaker/blob/main/src/assets/472560073_122126366918632004_6920547193601916595_n.jpg?raw=true" alt="CoffeeMaker Logo" className="w-full h-full object-cover" />
+                <img src="/src/assets/472560073_122126366918632004_6920547193601916595_n.jpg" alt="CoffeeMaker Logo" className="w-full h-full object-cover" />
               </div>
               <span className="text-xl font-bold text-primary">CoffeeMaker</span>
             </Link>
