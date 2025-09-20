@@ -197,7 +197,7 @@ const Home = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
               {testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="bg-card rounded-lg shadow-sm border border-border p-6 card-hover">
                   <div className="mb-4">
