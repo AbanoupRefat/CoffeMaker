@@ -19,7 +19,7 @@ const Checkout = () => {
     phone: '',
     address: '',
     city: '',
-    governorate: '',
+    governorate: '', // Will be set to -1 after governorates are loaded
     paymentMethod: 'cod',
     orderNotes: '',
   });
@@ -32,23 +32,6 @@ const Checkout = () => {
 
   // Pre-fill form with profile data if available
   useEffect(() => {
-    if (profile) {
-      setFormData(prev => ({
-        ...prev,
-        fullName: profile.full_name || '',
-        phone: profile.phone || '',
-        address: profile.address || '',
-        city: profile.city || '',
-        governorate: profile.governorate || '',
-      }));
-    }
-    if (user) {
-      setFormData(prev => ({
-        ...prev,
-        email: user.email || '',
-      }));
-    }
-
     // Fetch governorates from the database
     const fetchGovernorates = async () => {
       try {
@@ -60,13 +43,48 @@ const Checkout = () => {
 
         if (error) throw error;
         setGovernorates(data || []);
+        
+        // Set default governorate to -1 (select governorate) after loading governorates
+        setFormData(prev => ({
+          ...prev,
+          governorate: '-1'
+        }));
       } catch (error) {
         console.error('Error fetching governorates:', error);
       }
     };
 
     fetchGovernorates();
-  }, [profile, user]);
+  }, []);
+  
+  // Fill form with user data after governorates are loaded
+  useEffect(() => {
+    if (profile) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: profile.full_name || '',
+        phone: profile.phone || '',
+        address: profile.address || '',
+        city: profile.city || '',
+        governorate: profile.governorate || '-1',
+      }));
+      
+      // Check if governorate is valid and update shipping fee
+      if (profile.governorate && governorates.length > 0) {
+        const selectedGovernorate = governorates.find(gov => gov.id === profile.governorate);
+        if (selectedGovernorate) {
+          setShippingFee(selectedGovernorate.shipping_fee);
+        }
+      }
+    }
+    
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        email: user.email || '',
+      }));
+    }
+  }, [profile, user, governorates]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,10 +94,15 @@ const Checkout = () => {
     }));
 
     // Update shipping fee when governorate changes
-    if (name === 'governorate' && value) {
-      const selectedGovernorate = governorates.find(gov => gov.id === value);
-      if (selectedGovernorate) {
-        setShippingFee(selectedGovernorate.shipping_fee);
+    if (name === 'governorate') {
+      if (value && value !== '-1') {
+        const selectedGovernorate = governorates.find(gov => gov.id === value);
+        if (selectedGovernorate) {
+          setShippingFee(selectedGovernorate.shipping_fee);
+        }
+      } else {
+        // Reset shipping fee if no governorate is selected
+        setShippingFee(null);
       }
     }
   };
@@ -93,7 +116,7 @@ const Checkout = () => {
     if (!formData.phone.trim()) errors.phone = 'Phone number is required';
     if (!formData.address.trim()) errors.address = 'Address is required';
     if (!formData.city.trim()) errors.city = 'City is required';
-    if (!formData.governorate) errors.governorate = 'Governorate is required';
+    if (!formData.governorate || formData.governorate === '-1') errors.governorate = 'Governorate is required';
     
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -127,7 +150,7 @@ const Checkout = () => {
       };
       
       // Check if governorate is selected
-      if (shippingFee === null) {
+      if (shippingFee === null || formData.governorate === '-1') {
         showToast('Please select a governorate first', 'error');
         setFormErrors(prev => ({ ...prev, governorate: 'Please select a governorate' }));
         setLoading(false);
@@ -313,7 +336,7 @@ const Checkout = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   >
-                    <option value="">Select a governorate</option>
+                    <option value="-1">Select a governorate</option>
                     {governorates.map(gov => (
                       <option key={gov.id} value={gov.id}>
                         {gov.name}
