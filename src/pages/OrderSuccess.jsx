@@ -132,7 +132,7 @@ const OrderSuccess = () => {
               </div>
               <h3 className="font-semibold mb-2">Delivery</h3>
               <p className="text-sm text-muted-foreground">
-                Your order will be delivered from 3-7 business days
+                Your order will be delivered from 7-10 business days
               </p>
             </div>
           </div>
@@ -144,7 +144,7 @@ const OrderSuccess = () => {
             <div>
               <h3 className="font-semibold mb-1">Estimated Delivery</h3>
               <p className="text-muted-foreground">
-                3-7 business days
+                7-10 business days
               </p>
             </div>
             <div className="text-right">
