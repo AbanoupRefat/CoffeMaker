@@ -144,7 +144,7 @@ const OrderSuccess = () => {
             <div>
               <h3 className="font-semibold mb-1">Estimated Delivery</h3>
               <p className="text-muted-foreground">
-                7-10 business days
+                3-7 business days
               </p>
             </div>
             <div className="text-right">

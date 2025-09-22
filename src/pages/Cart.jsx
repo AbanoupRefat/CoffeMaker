@@ -253,7 +253,7 @@ const Cart = () => {
               <div className="mt-3 sm:mt-4 md:mt-6 pt-3 sm:pt-4 md:pt-6 border-t border-border">
                 <h3 className="text-sm sm:text-base font-medium mb-1 sm:mb-2">Estimated Delivery</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  📦 7-10 business days
+                  📦 3-7 business days
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   🚚 Available shipping Any Place In Egypt

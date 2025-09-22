@@ -450,7 +450,7 @@ const Checkout = () => {
               <div className="mt-6 space-y-3">
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Truck className="w-4 h-4 mr-2" />
-                  <span>Orders Takes from 7 to 10 Working Days</span>
+                  <span>Orders Takes from 3 to 7 Working Days</span>
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Shield className="w-4 h-4 mr-2" />
