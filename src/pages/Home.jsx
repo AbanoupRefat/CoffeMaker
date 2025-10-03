@@ -217,7 +217,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2">
             <img
-              src="https://github.com/AbanoupRefat/CoffeMaker/blob/main/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png?raw=true"
+              src="/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png"
               alt="Our Coffee Story"
               className="rounded-lg shadow-lg object-cover w-full h-full"
             />
