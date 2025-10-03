@@ -34,7 +34,7 @@ export const OrderConfirmationEmail = ({
     day: 'numeric',
   });
 
-  const estimatedDeliveryDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
+  const estimatedDeliveryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -50,7 +50,7 @@ export const OrderConfirmationEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src={`${baseUrl}/logo.png`}
+              src={`/assets/logo.png`}
               width="120"
               height="40"
               alt="CoffeeCraft"

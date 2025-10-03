@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Star, ArrowRight, Coffee, Truck, Shield, Heart, Instagram, Facebook, MessageCircle, Loader2, ShoppingCart, Eye } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { testimonials } from '../data/products';
@@ -288,10 +289,10 @@ const Home = () => {
 };
 
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [selectedSize, setSelectedSize] = useState('200g');
   const { showToast } = useToast();
-  
-  const [selectedSize, setSelectedSize] = useState('100g');
 
   const handleAddToCart = (e) => {
     e.preventDefault(); // Prevent navigation to product detail
@@ -352,7 +353,8 @@ const ProductCard = ({ product }) => {
           
           {/* Size Selection - Prevent navigation */}
           <div className="flex flex-wrap items-center justify-center gap-1">
-            {['50g', '100g', '200g'].map((size) => (
+            {/* ['50g', '100g', '200g'].map((size) => ( */}
+            {['200g'].map((size) => (
               <button
                 key={size}
                 onClick={(e) => handleSizeChange(size, e)}

@@ -30,7 +30,7 @@ const AboutUs = () => {
             <div className="w-full max-w-md mx-auto">
               {TikTokEmbed && (
                 <TikTokEmbed
-                  url="https://www.tiktok.com/@coffeemakercr/video/7547748307980799248"
+                  url="https://vt.tiktok.com/ZSDUsCxvg/"
                   width="100%"
                   style={{ maxWidth: "100%" }}
                 />

@@ -235,7 +235,7 @@ const Products = () => {
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const [selectedSize, setSelectedSize] = useState('100g');
+  const [selectedSize, setSelectedSize] = useState('200g');
 
   const handleViewDetails = (e) => {
     e.preventDefault();
@@ -322,7 +322,8 @@ const ProductCard = ({ product }) => {
 
         {/* Size Selection - Fixed for mobile */}
         <div className="flex flex-wrap items-center justify-center gap-1">
-          {['50g', '100g', '200g'].map((size) => (
+          {/* ['50g', '100g', '200g'].map((size) => ( */}
+          {['200g'].map((size) => (
             <button
               key={size}
               onClick={(e) => handleSizeChange(size, e)}

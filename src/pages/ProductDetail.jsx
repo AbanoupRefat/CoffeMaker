@@ -8,10 +8,10 @@ import { useCart, useToast } from '../App';
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products, loading } = useProducts();
+  const { products, loading: productsLoading } = useProducts();
   const { user } = useAuth();
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('Medium');
+  const [selectedSize, setSelectedSize] = useState('200g');
 
   const product = products.find(p => p.id === id);
 
@@ -38,7 +38,7 @@ const ProductDetail = () => {
     addToCart(product, selectedSize, quantity, selectedSizePrice);
   };
 
-  if (loading) {
+  if (productsLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -132,7 +132,8 @@ const ProductDetail = () => {
             <div>
               <h3 className="text-lg font-semibold mb-3">Size</h3>
               <div className="flex space-x-3">
-                {['50g', '100g', '200g'].map((size) => (
+                {/* ['50g', '100g', '200g'].map((size) => ( */}
+                {['200g'].map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}

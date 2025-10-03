@@ -48,7 +48,7 @@ export const OrderNotificationEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src={`${baseUrl}/logo.png`}
+              src={`/assets/logo.png`}
               width="120"
               height="40"
               alt="CoffeeCraft"
