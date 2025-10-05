@@ -13,6 +13,10 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('200g');
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   const product = products.find(p => p.id === id);
 
 
