@@ -19,12 +19,22 @@ const Home = () => {
       <section 
         className="relative flex items-center justify-center hero-bg min-h-[600px] py-16"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://raw.githubusercontent.com/AbanoupRefat/CoffeMaker/main/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png')`,
           backgroundPosition: '85% center',
           backgroundSize: 'cover'
         }}
       >
-        <div className="text-center text-white max-w-4xl mx-auto px-4">
+        {/* Mobile background overlay - will only be visible on small screens */}
+        <div 
+          className="absolute inset-0 z-0 block md:hidden" 
+          style={{
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://raw.githubusercontent.com/AbanoupRefat/CoffeMaker/main/src/assets/Gemini_Generated_Image_mobile.png')`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover'
+          }}
+        ></div>
+        
+        <div className="text-center text-white max-w-4xl mx-auto px-4 relative z-10">
           <h1 className="text-3xl md:text-5xl font-bold mb-6 fade-in-up">
               <span className="block text-white text-3xl md:text-5xl">
                 Coffee Maker

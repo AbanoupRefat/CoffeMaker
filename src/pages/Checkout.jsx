@@ -156,6 +156,24 @@ const Checkout = () => {
         setLoading(false);
         return;
       }
+
+      // Validate product IDs in cart against the database
+      const productIdsInCart = cartItems.map(item => item.id);
+      const { data: existingProducts, error: productsError } = await supabase
+        .from('products')
+        .select('id')
+        .in('id', productIdsInCart);
+
+      if (productsError) throw productsError;
+
+      const existingProductIds = new Set(existingProducts.map(p => p.id));
+      const invalidProductIds = productIdsInCart.filter(id => !existingProductIds.has(id));
+
+      if (invalidProductIds.length > 0) {
+        showToast('Some products in your cart are no longer available. Please review your cart.', 'error');
+        setLoading(false);
+        return;
+      }
       
       const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
       const discountAmount = getDiscountAmount();
