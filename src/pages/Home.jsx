@@ -19,8 +19,8 @@ const Home = () => {
       <section 
         className="relative flex items-center justify-center hero-bg min-h-[600px] py-16"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://raw.githubusercontent.com/AbanoupRefat/CoffeMaker/main/src/assets/Gemini_Generated_Image_t1kxc3t1kxc3t1kx.png')`,
-          backgroundPosition: '85% center',
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/pc view.jpg')`,
+          backgroundPosition: 'center',
           backgroundSize: 'cover'
         }}
       >
@@ -28,7 +28,7 @@ const Home = () => {
         <div 
           className="absolute inset-0 z-0 block md:hidden" 
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://raw.githubusercontent.com/AbanoupRefat/CoffeMaker/main/src/assets/Gemini_Generated_Image_mobile.png')`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/mobile view.jpg')`,
             backgroundPosition: 'center',
             backgroundSize: 'cover'
           }}
