@@ -20,7 +20,7 @@ const Home = () => {
         className="relative flex items-center justify-center hero-bg min-h-[600px] py-16"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/pc view.jpg')`,
-          backgroundPosition: 'center',
+          backgroundPosition: 'center 20%', // Adjusted positioning
           backgroundSize: 'cover'
         }}
       >
@@ -29,12 +29,12 @@ const Home = () => {
           className="absolute inset-0 z-0 block md:hidden" 
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/mobile view.jpg')`,
-            backgroundPosition: 'center',
+            backgroundPosition: 'center 20%', // Adjusted positioning
             backgroundSize: 'cover'
           }}
         ></div>
         
-        <div className="text-center text-white max-w-4xl mx-auto px-4 relative z-10">
+        <div className="text-center text-white max-w-4xl mx-auto px-4 relative z-10 pt-20"> {/* Added pt-20 */}
           <h1 className="text-3xl md:text-5xl font-bold mb-6 fade-in-up">
               <span className="block text-white text-3xl md:text-5xl">
                 Coffee Maker
